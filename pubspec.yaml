@@ -54,6 +54,8 @@ dependencies:
   bloc: ^9.1.0
   flutter_bloc: ^9.1.1
 
+  avatar_glow: ^3.0.1
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -76,6 +78,7 @@ flutter:
 
   assets:
     - assets/images/
+    - assets/svg/
 
   fonts:
     - family: Urbanist
