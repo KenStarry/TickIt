@@ -3,7 +3,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:printing/printing.dart';
 import 'package:tickit/core/utils/extensions/context_extensions.dart';
-import 'package:tickit/features/ticket_category/domain/model/ticket_model.dart';
+import 'package:tickit/features/ticket_category/domain/model/ticket_category_model.dart';
 
 import '../../../../core/utils/functions/file_compression.dart';
 import '../../../../core/utils/functions/share_plus_utility.dart';

@@ -5,7 +5,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:tickit/core/presentation/components/custom_filled_button.dart';
 import 'package:tickit/core/utils/extensions/context_extensions.dart';
 import 'package:tickit/features/ticket_receipt/presentation/pages/ticket_receipt.dart';
-import 'package:tickit/features/ticket_category/domain/model/ticket_model.dart';
+import 'package:tickit/features/ticket_category/domain/model/ticket_category_model.dart';
 
 import '../../../../core/presentation/components/custom_network_image.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';

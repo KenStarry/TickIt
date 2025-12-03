@@ -7,7 +7,7 @@ import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:printing/printing.dart';
 import 'package:tickit/core/theme/extensions/tickit_colors.dart';
-import 'package:tickit/features/ticket_category/domain/model/ticket_model.dart';
+import 'package:tickit/features/ticket_category/domain/model/ticket_category_model.dart';
 
 import '../../../../core/utils/functions/file_compression.dart';
 import 'components/ticket_clipper.dart';

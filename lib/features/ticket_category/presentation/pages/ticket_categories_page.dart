@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_extend/flutter_extend.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:tickit/core/presentation/components/custom_network_image.dart';
 import 'package:tickit/core/utils/extensions/context_extensions.dart';
-import '../../domain/model/ticket_model.dart';
+import 'package:tickit/features/tickets/presentation/bloc/tickets_bloc.dart';
+import '../../domain/model/ticket_category_model.dart';
 import '../components/ticket_category_card.dart';
 
 class TicketCategoriesPage extends StatefulWidget {
@@ -16,7 +18,7 @@ class TicketCategoriesPage extends StatefulWidget {
 class _TicketCategoriesPageState extends State<TicketCategoriesPage> {
   final List<TicketCategoryModel> dummyCategorys = [
     TicketCategoryModel(
-      categoryId: 'tkt_001',
+      categoryId: 'cat_001',
       categoryTitle: 'Service Outage & Connectivity',
       categoryCoverUrl:
           'https://i.pinimg.com/1200x/bd/9b/66/bd9b66f90280b82444ba9898841c3f0e.jpg',
@@ -24,7 +26,7 @@ class _TicketCategoriesPageState extends State<TicketCategoriesPage> {
       categoryAmount: 150,
     ),
     TicketCategoryModel(
-      categoryId: 'tkt_002',
+      categoryId: 'cat_002',
       categoryTitle: 'Performance & Speed',
       categoryCoverUrl:
           "https://i.pinimg.com/1200x/94/a6/a1/94a6a129e3a9e54495805d5e545e356f.jpg",
@@ -32,7 +34,7 @@ class _TicketCategoriesPageState extends State<TicketCategoriesPage> {
       categoryAmount: 45,
     ),
     TicketCategoryModel(
-      categoryId: 'tkt_003',
+      categoryId: 'cat_003',
       categoryTitle: 'Equipment & Installation',
       categoryCoverUrl:
           "https://i.pinimg.com/736x/ee/09/4d/ee094dfbbf0d85fdc720bcfc5d7cf38b.jpg",
@@ -40,7 +42,7 @@ class _TicketCategoriesPageState extends State<TicketCategoriesPage> {
       categoryAmount: 80,
     ),
     TicketCategoryModel(
-      categoryId: 'tkt_004',
+      categoryId: 'cat_004',
       categoryTitle: 'Billing & Account Management',
       categoryCoverUrl:
           "https://i.pinimg.com/1200x/f5/4b/15/f54b1561caf346898654f1ec7b444cc0.jpg",
@@ -48,7 +50,7 @@ class _TicketCategoriesPageState extends State<TicketCategoriesPage> {
       categoryAmount: 25,
     ),
     TicketCategoryModel(
-      categoryId: 'tkt_005',
+      categoryId: 'cat_005',
       categoryTitle: 'Credentials & Security',
       categoryCoverUrl:
           "https://i.pinimg.com/736x/ec/fb/0a/ecfb0a7f995a44b816fbff95bf7b0ee8.jpg",
@@ -56,6 +58,13 @@ class _TicketCategoriesPageState extends State<TicketCategoriesPage> {
       categoryAmount: 120,
     ),
   ];
+
+  @override
+  void initState() {
+    super.initState();
+
+    context.read<TicketsBloc>().add(FetchTicketsEvent());
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -128,10 +137,13 @@ class _TicketCategoriesPageState extends State<TicketCategoriesPage> {
             SliverToBoxAdapter(child: SizedBox(height: 24)),
 
             SliverToBoxAdapter(
-              child: Text("Tickets", style: context.textTheme.titleLarge?.copyWith(
-                fontWeight: .w700,
-                color: context.colors.textBlack800
-              )),
+              child: Text(
+                "Tickets",
+                style: context.textTheme.titleLarge?.copyWith(
+                  fontWeight: .w700,
+                  color: context.colors.textBlack800,
+                ),
+              ),
             ),
 
             SliverToBoxAdapter(child: SizedBox(height: 16)),
