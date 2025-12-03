@@ -6,10 +6,12 @@ import 'package:flutter_svg/svg.dart';
 import 'package:tickit/core/presentation/components/custom_network_image.dart';
 import 'package:tickit/features/ticket_category_details/presentation/pages/ticket_category_detail_page.dart';
 import 'package:tickit/features/ticket_category/domain/model/ticket_category_model.dart';
+import 'package:tickit/features/tickets/domain/model/ticket_model.dart';
 import 'package:tickit/features/tickets/presentation/bloc/tickets_bloc.dart';
 
 import '../../../../core/presentation/components/material_motion.dart';
 import '../../../../core/utils/extensions/context_extensions.dart';
+import '../../../tickets/presentation/bloc/ticket_resolver_cubit.dart';
 
 class TicketCategoryCard extends StatefulWidget {
   final TicketCategoryModel ticketModel;
@@ -103,17 +105,18 @@ class _TicketCategoryCardState extends State<TicketCategoryCard> {
                               borderRadius: .circular(8),
                               color: context.colors.surfaceColor,
                             ),
-                            child: SvgPicture.network(tickets.tickets
-                                            .where(
-                                              (ticket) =>
-                                                  ticket.ticketCategoryId ==
-                                                  widget.ticketModel.categoryId,
-                                            )
-                                            .toList()
-                                            .take(3)
-                                            .toList()[index]
-                                            .ticketUserAvatarUrl ??
-                                        '',
+                            child: SvgPicture.network(
+                              tickets.tickets
+                                      .where(
+                                        (ticket) =>
+                                            ticket.ticketCategoryId ==
+                                            widget.ticketModel.categoryId,
+                                      )
+                                      .toList()
+                                      .take(3)
+                                      .toList()[index]
+                                      .ticketUserAvatarUrl ??
+                                  '',
                             ),
                           ),
                         ),
@@ -246,46 +249,51 @@ class _TicketCategoryCardState extends State<TicketCategoryCard> {
                               ),
                             ),
 
-                            BlocBuilder<TicketsBloc, TicketsState>(
-                              builder: (context, ticketsState) {
+                            BlocBuilder<TicketResolverCubit, Set<String>>(
+                              builder: (context, resolvedTicketsState) {
+                                return BlocBuilder<TicketsBloc, TicketsState>(
+                                  builder: (context, ticketsState) {
+                                    final totalTickets =
+                                        ticketsState is TicketsSuccess
+                                        ? ticketsState.tickets
+                                              .where(
+                                                (ticket) =>
+                                                    ticket.ticketCategoryId ==
+                                                    widget
+                                                        .ticketModel
+                                                        .categoryId,
+                                              )
+                                              .toList()
+                                        : <TicketModel>[];
 
-                                final totalTickets = ticketsState is TicketsSuccess
-                                    ? ticketsState.tickets
-                                    .where(
-                                      (ticket) =>
-                                  ticket.ticketCategoryId ==
-                                      widget.ticketModel.categoryId,
-                                )
-                                    .toList()
-                                    .length
-                                    : 0;
+                                    final unresolvedTicketsCount =
+                                        ticketsState is TicketsSuccess
+                                        ? totalTickets.length -
+                                              (resolvedTicketsState.where(
+                                                (id) => totalTickets
+                                                    .map((t) => t.ticketId)
+                                                    .contains(id),
+                                              )).length
+                                        : 0;
 
-                                final unresolvedTicketsCount =
-                                ticketsState is TicketsSuccess
-                                    ? ticketsState.tickets
-                                    .where(
-                                      (ticket) =>
-                                  ticket.ticketCategoryId ==
-                                      widget.ticketModel.categoryId,
-                                )
-                                    .toList()
-                                    .length
-                                    : 0;
-
-                                return Row(
-                                  crossAxisAlignment: .center,
-                                  mainAxisAlignment: .start,
-                                  spacing: 24,
-                                  children: [
-                                    detailRow(
-                                      asset: "assets/svg/login.svg",
-                                      title: "$totalTickets Tickets",
-                                    ),
-                                    detailRow(
-                                      asset: "assets/svg/clock.svg",
-                                      title: "$unresolvedTicketsCount Pending",
-                                    ),
-                                  ],
+                                    return Row(
+                                      crossAxisAlignment: .center,
+                                      mainAxisAlignment: .start,
+                                      spacing: 24,
+                                      children: [
+                                        detailRow(
+                                          asset: "assets/svg/login.svg",
+                                          title:
+                                              "${totalTickets.length} Tickets",
+                                        ),
+                                        detailRow(
+                                          asset: "assets/svg/clock.svg",
+                                          title:
+                                              "$unresolvedTicketsCount Pending",
+                                        ),
+                                      ],
+                                    );
+                                  },
                                 );
                               },
                             ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_extend/flutter_extend.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/svg.dart';
@@ -10,6 +11,7 @@ import 'package:tickit/features/tickets/domain/model/ticket_model.dart';
 
 import '../../../../core/presentation/components/custom_network_image.dart';
 import '../../../../core/presentation/components/material_motion.dart';
+import '../bloc/ticket_resolver_cubit.dart';
 
 class TicketDetailPage extends StatefulWidget {
   final TicketModel ticketModel;
@@ -111,62 +113,76 @@ class _TicketDetailPageState extends State<TicketDetailPage> {
                       ],
                     ),
 
-                    GestureDetector(
-                      onTap: () async {
-                        // _triggerAnimation();
+                    BlocBuilder<TicketResolverCubit, Set<String>>(
+                      builder: (context, resolvedTicketsState) {
+                        return GestureDetector(
+                          onTap: () async {
+                            // _triggerAnimation();
 
-                        setState(() {
-                          _ticketLoading = true;
-                        });
+                            setState(() {
+                              _ticketLoading = true;
+                            });
 
-                        // Simulate a network request (e.g., 2 seconds)
-                        await Future.delayed(const Duration(seconds: 2));
+                            context.read<TicketResolverCubit>().toggleResolve(
+                              widget.ticketModel.ticketId ?? '',
+                            );
 
-                        /// Animated Success!
+                            // Simulate a network request (e.g., 2 seconds)
+                            await Future.delayed(const Duration(seconds: 2));
 
-                        // Reset back to button (optional)
-                        if (mounted) {
-                          setState(() {
-                            _ticketLoading = false;
-                          });
-                        }
-                      },
-                      child: AnimatedContainer(
-                        duration: 200.milliseconds,
-                        curve: Curves.easeIn,
-                        width: _ticketLoading ? 60 : 300,
-                        height: _ticketLoading ? 60 : 55,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(100),
-                          color: _ticketLoading
-                              ? context.colors.surfaceColor
-                              : context.colors.primaryColor,
-                        ),
-                        child: Center(
-                          child: AnimatedSwitcher(
-                            duration: 300.milliseconds,
-                            switchInCurve: Curves.easeIn,
-                            switchOutCurve: Curves.easeOut,
-                            child: _ticketLoading
-                                ? UnconstrainedBox(
-                                    child: SpinKitSpinningLines(
-                                      color: context.colors.primaryColor,
-                                      size: 45,
-                                    ),
-                                  )
-                                : Text(
-                                    "Resolve",
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .bodyLarge!
-                                        .copyWith(
-                                          color: context.colors.onPrimaryColor,
-                                          fontWeight: FontWeight.w700,
+                            //  Update
+                            context.pop();
+
+                            // Reset back to button (optional)
+                            if (mounted) {
+                              setState(() {
+                                _ticketLoading = false;
+                              });
+                            }
+                          },
+                          child: AnimatedContainer(
+                            duration: 200.milliseconds,
+                            curve: Curves.easeIn,
+                            width: _ticketLoading ? 60 : 300,
+                            height: _ticketLoading ? 60 : 55,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(100),
+                              color: _ticketLoading
+                                  ? context.colors.surfaceColor
+                                  : context.colors.primaryColor,
+                            ),
+                            child: Center(
+                              child: AnimatedSwitcher(
+                                duration: 300.milliseconds,
+                                switchInCurve: Curves.easeIn,
+                                switchOutCurve: Curves.easeOut,
+                                child: _ticketLoading
+                                    ? UnconstrainedBox(
+                                        child: SpinKitSpinningLines(
+                                          color: context.colors.primaryColor,
+                                          size: 45,
                                         ),
-                                  ),
+                                      )
+                                    : Text(
+                                        resolvedTicketsState.contains(
+                                              widget.ticketModel.ticketId,
+                                            )
+                                            ? "Resolved"
+                                            : "Resolve",
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyLarge!
+                                            .copyWith(
+                                              color:
+                                                  context.colors.onPrimaryColor,
+                                              fontWeight: FontWeight.w700,
+                                            ),
+                                      ),
+                              ),
+                            ),
                           ),
-                        ),
-                      ),
+                        );
+                      },
                     ),
 
                     // CustomFilledButton(

@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:path_provider/path_provider.dart' as path_provider;
 import 'package:tickit/core/theme/models/theme_config.dart';
 import 'package:tickit/core/theme/tickit_theme.dart';
+import 'package:tickit/features/tickets/presentation/bloc/ticket_resolver_cubit.dart';
 import 'package:tickit/features/tickets/presentation/bloc/tickets_bloc.dart';
 
 import 'core/di/locator.dart';
@@ -19,7 +20,10 @@ void main() async {
 
   runApp(
     MultiBlocProvider(
-      providers: [BlocProvider(create: (context) => TicketsBloc())],
+      providers: [
+        BlocProvider(create: (context) => TicketsBloc()),
+        BlocProvider(create: (context) => TicketResolverCubit()),
+      ],
       child: const TickIt(),
     ),
   );
