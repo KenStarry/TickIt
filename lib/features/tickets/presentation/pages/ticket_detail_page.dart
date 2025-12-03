@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_extend/flutter_extend.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tickit/core/presentation/components/custom_filled_button.dart';
@@ -7,6 +9,7 @@ import 'package:tickit/core/utils/extensions/context_extensions.dart';
 import 'package:tickit/features/tickets/domain/model/ticket_model.dart';
 
 import '../../../../core/presentation/components/custom_network_image.dart';
+import '../../../../core/presentation/components/material_motion.dart';
 
 class TicketDetailPage extends StatefulWidget {
   final TicketModel ticketModel;
@@ -18,6 +21,8 @@ class TicketDetailPage extends StatefulWidget {
 }
 
 class _TicketDetailPageState extends State<TicketDetailPage> {
+  bool _ticketLoading = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -106,12 +111,70 @@ class _TicketDetailPageState extends State<TicketDetailPage> {
                       ],
                     ),
 
-                    CustomFilledButton(
-                      text: "Resolve",
-                      onTap: () {
-                        //  Add this id to the list of resolved tickets
+                    GestureDetector(
+                      onTap: () async {
+                        // _triggerAnimation();
+
+                        setState(() {
+                          _ticketLoading = true;
+                        });
+
+                        // Simulate a network request (e.g., 2 seconds)
+                        await Future.delayed(const Duration(seconds: 2));
+
+                        /// Animated Success!
+
+                        // Reset back to button (optional)
+                        if (mounted) {
+                          setState(() {
+                            _ticketLoading = false;
+                          });
+                        }
                       },
+                      child: AnimatedContainer(
+                        duration: 200.milliseconds,
+                        curve: Curves.easeIn,
+                        width: _ticketLoading ? 60 : 300,
+                        height: _ticketLoading ? 60 : 55,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(100),
+                          color: _ticketLoading
+                              ? context.colors.surfaceColor
+                              : context.colors.primaryColor,
+                        ),
+                        child: Center(
+                          child: AnimatedSwitcher(
+                            duration: 300.milliseconds,
+                            switchInCurve: Curves.easeIn,
+                            switchOutCurve: Curves.easeOut,
+                            child: _ticketLoading
+                                ? UnconstrainedBox(
+                                    child: SpinKitSpinningLines(
+                                      color: context.colors.primaryColor,
+                                      size: 45,
+                                    ),
+                                  )
+                                : Text(
+                                    "Resolve",
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodyLarge!
+                                        .copyWith(
+                                          color: context.colors.onPrimaryColor,
+                                          fontWeight: FontWeight.w700,
+                                        ),
+                                  ),
+                          ),
+                        ),
+                      ),
                     ),
+
+                    // CustomFilledButton(
+                    //   text: "Resolve",
+                    //   onTap: () {
+                    //     //  Add this id to the list of resolved tickets
+                    //   },
+                    // ),
                   ],
                 ),
               ),
