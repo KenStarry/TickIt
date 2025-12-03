@@ -4,10 +4,13 @@ import 'package:flutter_extend/flutter_extend.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:tickit/core/presentation/components/custom_filled_button.dart';
 import 'package:tickit/core/utils/extensions/context_extensions.dart';
+import 'package:tickit/features/ticket_receipt/presentation/pages/ticket_receipt.dart';
 import 'package:tickit/features/tickets/domain/model/ticket_model.dart';
 
 import '../../../../core/presentation/components/custom_network_image.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+
+import '../../../../core/presentation/components/material_motion.dart';
 
 class TicketDetailPage extends StatefulWidget {
   final TicketModel ticketModel;
@@ -20,22 +23,6 @@ class TicketDetailPage extends StatefulWidget {
 
 class _TicketDetailPageState extends State<TicketDetailPage> {
   bool _ticketLoading = false;
-
-  void _triggerAnimation() async {
-    setState(() {
-      _ticketLoading = true;
-    });
-
-    // Simulate a network request (e.g., 2 seconds)
-    await Future.delayed(const Duration(seconds: 2));
-
-    // Reset back to button (optional)
-    if (mounted) {
-      setState(() {
-        _ticketLoading = false;
-      });
-    }
-  }
 
   Widget detailRow({required String asset, required String title}) => Row(
     crossAxisAlignment: .center,
@@ -210,10 +197,91 @@ class _TicketDetailPageState extends State<TicketDetailPage> {
                               right: 16,
                               bottom: 32,
                             ),
-                            child: true
-                                ? GestureDetector(
-                                    onTap: () {
-                                      _triggerAnimation();
+                            child: true ? addMaterialContainerMotion(
+                              context,
+                              closedBuilder: (context, openWidget) => GestureDetector(
+                                onTap: () async {
+                                  // _triggerAnimation();
+
+                                  setState(() {
+                                    _ticketLoading = true;
+                                  });
+
+                                  // Simulate a network request (e.g., 2 seconds)
+                                  await Future.delayed(const Duration(seconds: 2));
+
+                                  /// Start the morphing
+                                  openWidget();
+
+                                  // Reset back to button (optional)
+                                  if (mounted) {
+                                    setState(() {
+                                      _ticketLoading = false;
+                                    });
+                                  }
+                                },
+                                child: AnimatedContainer(
+                                  duration: 200.milliseconds,
+                                  curve: Curves.easeIn,
+                                  width: _ticketLoading ? 60 : 300,
+                                  height: _ticketLoading ? 60 : 55,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(
+                                      100,
+                                    ),
+                                    color: _ticketLoading
+                                        ? context.colors.surfaceColor
+                                        : context.colors.primaryColor,
+                                  ),
+                                  child: Center(
+                                    child: AnimatedSwitcher(
+                                      duration: 300.milliseconds,
+                                      switchInCurve: Curves.easeIn,
+                                      switchOutCurve: Curves.easeOut,
+                                      child: _ticketLoading
+                                          ? UnconstrainedBox(
+                                        child: SpinKitSpinningLines(
+                                          color: context
+                                              .colors
+                                              .primaryColor,
+                                          size: 45,
+                                        ),
+                                      )
+                                          : Text(
+                                        "Mark Resolved",
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyLarge!
+                                            .copyWith(
+                                          color: context
+                                              .colors
+                                              .onPrimaryColor,
+                                          fontWeight:
+                                          FontWeight.w700,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              onClosed: (_) async {},
+                              openBuilder: (context, closeWidget) =>
+                                  TicketReceipt(ticketModel: widget.ticketModel),
+                            ) : GestureDetector(
+                                    onTap: () async {
+                                      setState(() {
+                                        _ticketLoading = true;
+                                      });
+
+                                      // Simulate a network request (e.g., 2 seconds)
+                                      await Future.delayed(const Duration(seconds: 2));
+
+                                      // Reset back to button (optional)
+                                      if (mounted) {
+                                        setState(() {
+                                          _ticketLoading = false;
+                                        });
+                                      }
                                     },
                                     child: AnimatedContainer(
                                       duration: 200.milliseconds,
@@ -259,17 +327,6 @@ class _TicketDetailPageState extends State<TicketDetailPage> {
                                       ),
                                     ),
                                   )
-                                : CustomFilledButton(
-                                    text: "Mark Resolved",
-                                    // borderRadius: .only(
-                                    //   bottomRight: Radius.circular(24),
-                                    //   bottomLeft: Radius.circular(24),
-                                    // ),
-                                    onTap: () {
-                                      //  Resolve
-                                      //  Open the Ticket Preview screen
-                                    },
-                                  ),
                           ),
                         ],
                       ),
