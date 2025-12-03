@@ -28,8 +28,7 @@ ThemeData buildTheme(TickItThemeConfig config) {
     scaffoldBackgroundColor: scheme.background,
     canvasColor: scheme.background,
     dividerColor: Colors.transparent,
-    fontFamily: "Urbanist",
-    textTheme: AppTextTheme.fromColorScheme(scheme),
+    textTheme: AppTextTheme.fromColors(colors),
     // or fromColorScheme
     appBarTheme: AppBarTheme(
       backgroundColor: scheme.surface,

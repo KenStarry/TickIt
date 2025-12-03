@@ -1,35 +1,46 @@
 import 'package:flutter/material.dart';
+import 'package:tickit/core/theme/extensions/tickit_colors.dart';
 
 class AppTextTheme {
-  /// For Material-based themes
-  static TextTheme fromColorScheme(ColorScheme scheme) {
+
+  static TextTheme fromColors(TickItColors colors) {
     return TextTheme(
-      displayLarge: TextStyle(
-          color: scheme.onBackground,
-          fontSize: 32,
-          fontWeight: FontWeight.bold),
-      displayMedium: TextStyle(
-          color: scheme.onBackground,
-          fontSize: 28,
-          fontWeight: FontWeight.w700),
-      headlineLarge: TextStyle(
-          color: scheme.onSurface, fontSize: 24, fontWeight: FontWeight.w700),
-      headlineMedium: TextStyle(
-          color: scheme.onSurfaceVariant,
-          fontSize: 20,
-          fontWeight: FontWeight.w600),
-      titleLarge: TextStyle(
-          color: scheme.onPrimary, fontSize: 18, fontWeight: FontWeight.w600),
       bodyLarge: TextStyle(
-          color: scheme.onBackground,
-          fontSize: 16,
-          fontWeight: FontWeight.w500),
+        color: colors.textBlack800,
+        fontFamily: "Urbanist",
+        fontSize: 16,
+        fontWeight: FontWeight.w600,
+      ),
       bodyMedium: TextStyle(
-          color: scheme.onBackground.withOpacity(0.8),
-          fontSize: 14,
-          fontWeight: FontWeight.w400),
-      labelLarge: TextStyle(
-          color: scheme.primary, fontSize: 12, fontWeight: FontWeight.w600),
+        color: colors.textBlack600,
+        fontFamily: "Urbanist",
+        fontSize: 14,
+        fontWeight: FontWeight.w500,
+      ),
+      bodySmall: TextStyle(
+        color: colors.textBlack600,
+        fontFamily: "Urbanist",
+        fontSize: 12,
+        fontWeight: FontWeight.w400,
+      ),
+      titleLarge: TextStyle(
+        color: colors.textBlack900,
+        fontFamily: "Urbanist",
+        fontSize: 28,
+        fontWeight: FontWeight.w700,
+      ),
+      titleMedium: TextStyle(
+        color: colors.textBlack900,
+        fontFamily: "Urbanist",
+        fontSize: 24,
+        fontWeight: FontWeight.w700,
+      ),
+      titleSmall: TextStyle(
+        color: colors.textBlack800,
+        fontFamily: "Urbanist",
+        fontSize: 20,
+        fontWeight: FontWeight.w700,
+      ),
     );
   }
 }

@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_extend/flutter_extend.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:tickit/core/presentation/components/custom_network_image.dart';
+import 'package:tickit/features/ticket_detail/presentation/pages/ticket_detail_page.dart';
 import 'package:tickit/features/tickets/domain/model/ticket_model.dart';
 
+import '../../../../core/presentation/components/material_motion.dart';
 import '../../../../core/utils/extensions/context_extensions.dart';
 
 class TicketCard extends StatefulWidget {
@@ -25,7 +27,10 @@ class _TicketCardState extends State<TicketCard> {
         asset,
         width: 16,
         height: 16,
-        colorFilter: ColorFilter.mode(Colors.white.withValues(alpha: 0.9), .srcIn),
+        colorFilter: ColorFilter.mode(
+          Colors.white.withValues(alpha: 0.9),
+          .srcIn,
+        ),
       ),
       Text(
         title,
@@ -128,128 +133,272 @@ class _TicketCardState extends State<TicketCard> {
             ],
           ),
           Expanded(
-            child: GestureDetector(
-              onTap: () {
-                //  Open Details Page
-              },
-              child: Container(
-                width: double.infinity,
-                height: double.infinity,
-                margin: const .only(bottom: 16, top: 16),
-                child: Stack(
-                  children: [
-                    CustomNetworkImage(
-                      url: widget.ticketModel.ticketCoverUrl,
-                      borderRadius: .circular(24),
-                    ),
-
-                    Align(
-                      alignment: Alignment.bottomCenter,
+            child: true
+                ? addMaterialContainerMotion(
+                    context,
+                    closedBuilder: (context, openWidget) => GestureDetector(
+                      onTap: () {
+                        //  Open Details Page
+                        openWidget();
+                      },
                       child: Container(
                         width: double.infinity,
                         height: double.infinity,
-                        margin: EdgeInsets.only(top: 50),
-                        decoration: BoxDecoration(
-                          // color: context.colors.backgroundColor,
-                          borderRadius: BorderRadius.only(
-                            bottomRight: Radius.circular(24),
-                            bottomLeft: Radius.circular(24),
-                          ),
-                          gradient: LinearGradient(
-                            begin: Alignment.topCenter,
-                            end: Alignment.bottomCenter,
-                            colors: [
-                              Colors.black.withValues(alpha: 0.0),
-                              // fully transparent top
-                              Colors.black.withValues(alpha: 0.15),
-                              // gentle lift
-                              Colors.black.withValues(alpha: 0.45),
-                              // soft smoke start
-                              Colors.black.withValues(alpha: 0.75),
-                              // warm mid haze
-                              Colors.black.withValues(alpha: 0.95),
-                              // almost solid
-                              Colors.black.withValues(alpha: 1.0),
-                              // solid bottom blend
-                            ],
-                            stops: const [
-                              0.0, // pure top
-                              0.18, // light mist
-                              0.38, // smoke begins
-                              0.62, // body of smoke
-                              0.82, // thick fade
-                              1.0, // full blend
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
+                        margin: const .only(bottom: 16, top: 16),
+                        child: Stack(
+                          children: [
+                            CustomNetworkImage(
+                              url: widget.ticketModel.ticketCoverUrl,
+                              borderRadius: .circular(24),
+                            ),
 
-                    Container(
-                      width: double.infinity,
-                      height: double.infinity,
-                      padding: const .symmetric(horizontal: 16, vertical: 16),
-                      child: Column(
-                        crossAxisAlignment: .start,
-                        mainAxisAlignment: .end,
-                        spacing: 16,
-                        children: [
-                          ClipRRect(
-                            borderRadius: .circular(8),
-                            child: BackdropFilter(
-                              filter: .blur(sigmaX: 10, sigmaY: 10),
+                            Align(
+                              alignment: Alignment.bottomCenter,
                               child: Container(
-                                padding: const .symmetric(
-                                  horizontal: 12,
-                                  vertical: 4,
-                                ),
+                                width: double.infinity,
+                                height: double.infinity,
+                                margin: EdgeInsets.only(top: 50),
                                 decoration: BoxDecoration(
-                                  borderRadius: .circular(8),
-                                  color: context.colors.primaryColor.withValues(alpha: 0.3),
-                                ),
-                                child: Text(
-                                  "VIP",
-                                  style: context.textTheme.bodySmall?.copyWith(
-                                    fontWeight: .w700,
-                                    color: context.colors.onPrimaryColor,
+                                  // color: context.colors.backgroundColor,
+                                  borderRadius: BorderRadius.only(
+                                    bottomRight: Radius.circular(24),
+                                    bottomLeft: Radius.circular(24),
+                                  ),
+                                  gradient: LinearGradient(
+                                    begin: Alignment.topCenter,
+                                    end: Alignment.bottomCenter,
+                                    colors: [
+                                      Colors.black.withValues(alpha: 0.0),
+                                      // fully transparent top
+                                      Colors.black.withValues(alpha: 0.15),
+                                      // gentle lift
+                                      Colors.black.withValues(alpha: 0.45),
+                                      // soft smoke start
+                                      Colors.black.withValues(alpha: 0.75),
+                                      // warm mid haze
+                                      Colors.black.withValues(alpha: 0.95),
+                                      // almost solid
+                                      Colors.black.withValues(alpha: 1.0),
+                                      // solid bottom blend
+                                    ],
+                                    stops: const [
+                                      0.0, // pure top
+                                      0.18, // light mist
+                                      0.38, // smoke begins
+                                      0.62, // body of smoke
+                                      0.82, // thick fade
+                                      1.0, // full blend
+                                    ],
                                   ),
                                 ),
                               ),
                             ),
+
+                            Container(
+                              width: double.infinity,
+                              height: double.infinity,
+                              padding: const .symmetric(
+                                horizontal: 16,
+                                vertical: 16,
+                              ),
+                              child: Column(
+                                crossAxisAlignment: .start,
+                                mainAxisAlignment: .end,
+                                spacing: 16,
+                                children: [
+                                  ClipRRect(
+                                    borderRadius: .circular(8),
+                                    child: BackdropFilter(
+                                      filter: .blur(sigmaX: 10, sigmaY: 10),
+                                      child: Container(
+                                        padding: const .symmetric(
+                                          horizontal: 12,
+                                          vertical: 4,
+                                        ),
+                                        decoration: BoxDecoration(
+                                          borderRadius: .circular(8),
+                                          color: context.colors.primaryColor
+                                              .withValues(alpha: 0.3),
+                                        ),
+                                        child: Text(
+                                          "VIP",
+                                          style: context.textTheme.bodySmall
+                                              ?.copyWith(
+                                                fontWeight: .w700,
+                                                color: context
+                                                    .colors
+                                                    .onPrimaryColor,
+                                              ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  //  Title
+                                  Text(
+                                    widget.ticketModel.ticketTitle,
+                                    style: context.textTheme.titleLarge
+                                        ?.copyWith(
+                                          fontWeight: .bold,
+                                          fontSize: 24,
+                                          color: Colors.white,
+                                        ),
+                                  ),
+
+                                  //  Explanation
+                                  Row(
+                                    crossAxisAlignment: .center,
+                                    mainAxisAlignment: .start,
+                                    spacing: 24,
+                                    children: [
+                                      detailRow(
+                                        asset: "assets/svg/login.svg",
+                                        title: "SCI-FI",
+                                      ),
+                                      detailRow(
+                                        asset: "assets/svg/login.svg",
+                                        title: "19:00 PM",
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    onClosed: (_) async {},
+                    openBuilder: (context, closeWidget) =>
+                        TicketDetailPage(ticketModel: widget.ticketModel),
+                  )
+                : GestureDetector(
+                    onTap: () {
+                      //  Open Details Page
+                    },
+                    child: Container(
+                      width: double.infinity,
+                      height: double.infinity,
+                      margin: const .only(bottom: 16, top: 16),
+                      child: Stack(
+                        children: [
+                          CustomNetworkImage(
+                            url: widget.ticketModel.ticketCoverUrl,
+                            borderRadius: .circular(24),
                           ),
-                          //  Title
-                          Text(
-                            widget.ticketModel.ticketTitle,
-                            style: context.textTheme.titleLarge?.copyWith(
-                              fontWeight: .bold,
-                              fontSize: 24,
-                              color: Colors.white,
+
+                          Align(
+                            alignment: Alignment.bottomCenter,
+                            child: Container(
+                              width: double.infinity,
+                              height: double.infinity,
+                              margin: EdgeInsets.only(top: 50),
+                              decoration: BoxDecoration(
+                                // color: context.colors.backgroundColor,
+                                borderRadius: BorderRadius.only(
+                                  bottomRight: Radius.circular(24),
+                                  bottomLeft: Radius.circular(24),
+                                ),
+                                gradient: LinearGradient(
+                                  begin: Alignment.topCenter,
+                                  end: Alignment.bottomCenter,
+                                  colors: [
+                                    Colors.black.withValues(alpha: 0.0),
+                                    // fully transparent top
+                                    Colors.black.withValues(alpha: 0.15),
+                                    // gentle lift
+                                    Colors.black.withValues(alpha: 0.45),
+                                    // soft smoke start
+                                    Colors.black.withValues(alpha: 0.75),
+                                    // warm mid haze
+                                    Colors.black.withValues(alpha: 0.95),
+                                    // almost solid
+                                    Colors.black.withValues(alpha: 1.0),
+                                    // solid bottom blend
+                                  ],
+                                  stops: const [
+                                    0.0, // pure top
+                                    0.18, // light mist
+                                    0.38, // smoke begins
+                                    0.62, // body of smoke
+                                    0.82, // thick fade
+                                    1.0, // full blend
+                                  ],
+                                ),
+                              ),
                             ),
                           ),
 
-                          //  Explanation
-                          Row(
-                            crossAxisAlignment: .center,
-                            mainAxisAlignment: .start,
-                            spacing: 24,
-                            children: [
-                              detailRow(
-                                asset: "assets/svg/login.svg",
-                                title: "SCI-FI",
-                              ),
-                              detailRow(
-                                asset: "assets/svg/login.svg",
-                                title: "19:00 PM",
-                              ),
-                            ],
+                          Container(
+                            width: double.infinity,
+                            height: double.infinity,
+                            padding: const .symmetric(
+                              horizontal: 16,
+                              vertical: 16,
+                            ),
+                            child: Column(
+                              crossAxisAlignment: .start,
+                              mainAxisAlignment: .end,
+                              spacing: 16,
+                              children: [
+                                ClipRRect(
+                                  borderRadius: .circular(8),
+                                  child: BackdropFilter(
+                                    filter: .blur(sigmaX: 10, sigmaY: 10),
+                                    child: Container(
+                                      padding: const .symmetric(
+                                        horizontal: 12,
+                                        vertical: 4,
+                                      ),
+                                      decoration: BoxDecoration(
+                                        borderRadius: .circular(8),
+                                        color: context.colors.primaryColor
+                                            .withValues(alpha: 0.3),
+                                      ),
+                                      child: Text(
+                                        "VIP",
+                                        style: context.textTheme.bodySmall
+                                            ?.copyWith(
+                                              fontWeight: .w700,
+                                              color:
+                                                  context.colors.onPrimaryColor,
+                                            ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                //  Title
+                                Text(
+                                  widget.ticketModel.ticketTitle,
+                                  style: context.textTheme.titleLarge?.copyWith(
+                                    fontWeight: .bold,
+                                    fontSize: 24,
+                                    color: Colors.white,
+                                  ),
+                                ),
+
+                                //  Explanation
+                                Row(
+                                  crossAxisAlignment: .center,
+                                  mainAxisAlignment: .start,
+                                  spacing: 24,
+                                  children: [
+                                    detailRow(
+                                      asset: "assets/svg/login.svg",
+                                      title: "SCI-FI",
+                                    ),
+                                    detailRow(
+                                      asset: "assets/svg/login.svg",
+                                      title: "19:00 PM",
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
                           ),
                         ],
                       ),
                     ),
-                  ],
-                ),
-              ),
-            ),
+                  ),
           ),
         ],
       ),

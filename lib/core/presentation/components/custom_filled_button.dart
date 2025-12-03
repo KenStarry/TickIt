@@ -10,6 +10,7 @@ class CustomFilledButton extends StatelessWidget {
   final TextStyle? textStyle;
   final bool showElevation;
   final LinearGradient? gradient;
+  final BorderRadius? borderRadius;
   final double? width;
   final double? height;
   final bool isLoading;
@@ -23,6 +24,7 @@ class CustomFilledButton extends StatelessWidget {
     this.isLoading = false,
     this.showElevation = true,
     this.gradient,
+    this.borderRadius,
     this.icon,
     this.width,
     this.height,
@@ -41,7 +43,7 @@ class CustomFilledButton extends StatelessWidget {
         // height: 58,
         height: height ?? 55,
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(100),
+          borderRadius: borderRadius ?? BorderRadius.circular(100),
           color: bgColor ?? context.colors.primaryColor
           // gradient: (gradient ?? context.decorations.btnGradient),
           // boxShadow: showElevation ? context.decorations.btnShadow : null
