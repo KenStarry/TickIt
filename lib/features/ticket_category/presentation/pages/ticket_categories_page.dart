@@ -3,60 +3,57 @@ import 'package:flutter_extend/flutter_extend.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:tickit/core/presentation/components/custom_network_image.dart';
 import 'package:tickit/core/utils/extensions/context_extensions.dart';
-import 'package:tickit/features/tickets/presentation/components/ticket_card.dart';
+import '../../domain/model/ticket_model.dart';
+import '../components/ticket_category_card.dart';
 
-import '../domain/model/ticket_model.dart';
-
-class TicketsPage extends StatefulWidget {
-  const TicketsPage({super.key});
+class TicketCategoriesPage extends StatefulWidget {
+  const TicketCategoriesPage({super.key});
 
   @override
-  State<TicketsPage> createState() => _TicketsPageState();
+  State<TicketCategoriesPage> createState() => _TicketCategoriesPageState();
 }
 
-class _TicketsPageState extends State<TicketsPage> {
-  final List<TicketModel> dummyTickets = [
-    TicketModel(
-      ticketId: 'tkt_001',
-      ticketTitle: 'Avengers End-Game',
-      ticketCoverUrl:
+class _TicketCategoriesPageState extends State<TicketCategoriesPage> {
+  final List<TicketCategoryModel> dummyCategorys = [
+    TicketCategoryModel(
+      categoryId: 'tkt_001',
+      categoryTitle: 'Service Outage & Connectivity',
+      categoryCoverUrl:
           'https://i.pinimg.com/1200x/bd/9b/66/bd9b66f90280b82444ba9898841c3f0e.jpg',
-      ticketAmount: 150,
+      categoryAsset: "assets/images/bg_1.png",
+      categoryAmount: 150,
     ),
-    TicketModel(
-      ticketId: 'tkt_002',
-      ticketTitle: 'Spiderman, No Way Home',
-      ticketCoverUrl:
+    TicketCategoryModel(
+      categoryId: 'tkt_002',
+      categoryTitle: 'Performance & Speed',
+      categoryCoverUrl:
           "https://i.pinimg.com/1200x/94/a6/a1/94a6a129e3a9e54495805d5e545e356f.jpg",
-      ticketAmount: 45,
+      categoryAsset: "assets/images/bg_2.png",
+      categoryAmount: 45,
     ),
-    TicketModel(
-      ticketId: 'tkt_003',
-      ticketTitle: 'Superman v Batman',
-      ticketCoverUrl:
+    TicketCategoryModel(
+      categoryId: 'tkt_003',
+      categoryTitle: 'Equipment & Installation',
+      categoryCoverUrl:
           "https://i.pinimg.com/736x/ee/09/4d/ee094dfbbf0d85fdc720bcfc5d7cf38b.jpg",
-      ticketAmount: 80,
+      categoryAsset: "assets/images/bg_3.png",
+      categoryAmount: 80,
     ),
-    TicketModel(
-      ticketId: 'tkt_004',
-      ticketTitle: 'Rio 2',
-      ticketCoverUrl:
+    TicketCategoryModel(
+      categoryId: 'tkt_004',
+      categoryTitle: 'Billing & Account Management',
+      categoryCoverUrl:
           "https://i.pinimg.com/1200x/f5/4b/15/f54b1561caf346898654f1ec7b444cc0.jpg",
-      ticketAmount: 25,
+      categoryAsset: "assets/images/bg_4.png",
+      categoryAmount: 25,
     ),
-    TicketModel(
-      ticketId: 'tkt_005',
-      ticketTitle: 'The Flash',
-      ticketCoverUrl:
+    TicketCategoryModel(
+      categoryId: 'tkt_005',
+      categoryTitle: 'Credentials & Security',
+      categoryCoverUrl:
           "https://i.pinimg.com/736x/ec/fb/0a/ecfb0a7f995a44b816fbff95bf7b0ee8.jpg",
-      ticketAmount: 120,
-    ),
-    TicketModel(
-      ticketId: 'tkt_006',
-      ticketTitle: 'Croods 2',
-      ticketCoverUrl:
-          "https://i.pinimg.com/736x/f5/bb/13/f5bb1362871ac8422261a5ea627732e9.jpg",
-      ticketAmount: 60,
+      categoryAsset: "assets/images/bg_5.png",
+      categoryAmount: 120,
     ),
   ];
 
@@ -131,19 +128,19 @@ class _TicketsPageState extends State<TicketsPage> {
             SliverToBoxAdapter(child: SizedBox(height: 24)),
 
             SliverToBoxAdapter(
-              child: Text("My Shows", style: context.textTheme.titleLarge?.copyWith(
+              child: Text("Tickets", style: context.textTheme.titleLarge?.copyWith(
                 fontWeight: .w700,
-                color: context.colors.textBlack600
+                color: context.colors.textBlack800
               )),
             ),
 
             SliverToBoxAdapter(child: SizedBox(height: 16)),
-            //  All Tickets
+            //  All Categorys
             SliverList(
               delegate: SliverChildBuilderDelegate(
                 (context, index) =>
-                    TicketCard(ticketModel: dummyTickets[index]),
-                childCount: dummyTickets.length,
+                    TicketCategoryCard(ticketModel: dummyCategorys[index]),
+                childCount: dummyCategorys.length,
               ),
             ),
 

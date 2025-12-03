@@ -1,23 +1,24 @@
+import 'package:avatar_glow/avatar_glow.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_extend/flutter_extend.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:tickit/core/presentation/components/custom_network_image.dart';
 import 'package:tickit/features/ticket_detail/presentation/pages/ticket_detail_page.dart';
-import 'package:tickit/features/tickets/domain/model/ticket_model.dart';
+import 'package:tickit/features/ticket_category/domain/model/ticket_model.dart';
 
 import '../../../../core/presentation/components/material_motion.dart';
 import '../../../../core/utils/extensions/context_extensions.dart';
 
-class TicketCard extends StatefulWidget {
-  final TicketModel ticketModel;
+class TicketCategoryCard extends StatefulWidget {
+  final TicketCategoryModel ticketModel;
 
-  const TicketCard({super.key, required this.ticketModel});
+  const TicketCategoryCard({super.key, required this.ticketModel});
 
   @override
-  State<TicketCard> createState() => _TicketCardState();
+  State<TicketCategoryCard> createState() => _TicketCategoryCardState();
 }
 
-class _TicketCardState extends State<TicketCard> {
+class _TicketCategoryCardState extends State<TicketCategoryCard> {
   Widget detailRow({required String asset, required String title}) => Row(
     crossAxisAlignment: .center,
     mainAxisAlignment: .start,
@@ -58,12 +59,13 @@ class _TicketCardState extends State<TicketCard> {
             mainAxisAlignment: .center,
             spacing: 16,
             children: [
-              Text(
-                "LIVE",
-                style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  fontWeight: FontWeight.w700,
-                  fontSize: 16,
-                  color: context.colors.primaryColor,
+              AvatarGlow(
+                glowColor: context.colors.primaryColor,
+                child: Container(
+                  width: 10,
+                  height: 10,
+                  decoration: BoxDecoration(color: context.colors.iconColor,
+                  shape: .circle),
                 ),
               ),
               Container(
@@ -118,18 +120,6 @@ class _TicketCardState extends State<TicketCard> {
                   ),
                 ],
               ),
-
-              ...List.generate(
-                1,
-                (index) => Container(
-                  width: 3,
-                  height: 3,
-                  decoration: BoxDecoration(
-                    color: context.colors.iconColor,
-                    shape: .circle,
-                  ),
-                ),
-              ),
             ],
           ),
           Expanded(
@@ -146,10 +136,17 @@ class _TicketCardState extends State<TicketCard> {
                         margin: const .only(bottom: 16, top: 16),
                         child: Stack(
                           children: [
-                            CustomNetworkImage(
-                              url: widget.ticketModel.ticketCoverUrl,
+                            ClipRRect(
                               borderRadius: .circular(24),
+                              child: Image.asset(widget.ticketModel.categoryAsset,
+                              width: double.infinity,
+                              height: double.infinity,
+                              fit: .cover,),
                             ),
+                            // CustomNetworkImage(
+                            //   url: widget.ticketModel.ticketCoverUrl,
+                            //   borderRadius: .circular(24),
+                            // ),
 
                             Align(
                               alignment: Alignment.bottomCenter,
@@ -205,36 +202,9 @@ class _TicketCardState extends State<TicketCard> {
                                 mainAxisAlignment: .end,
                                 spacing: 16,
                                 children: [
-                                  ClipRRect(
-                                    borderRadius: .circular(8),
-                                    child: BackdropFilter(
-                                      filter: .blur(sigmaX: 10, sigmaY: 10),
-                                      child: Container(
-                                        padding: const .symmetric(
-                                          horizontal: 12,
-                                          vertical: 4,
-                                        ),
-                                        decoration: BoxDecoration(
-                                          borderRadius: .circular(8),
-                                          color: context.colors.primaryColor
-                                              .withValues(alpha: 0.3),
-                                        ),
-                                        child: Text(
-                                          "VIP",
-                                          style: context.textTheme.bodySmall
-                                              ?.copyWith(
-                                                fontWeight: .w700,
-                                                color: context
-                                                    .colors
-                                                    .onPrimaryColor,
-                                              ),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
                                   //  Title
                                   Text(
-                                    widget.ticketModel.ticketTitle,
+                                    widget.ticketModel.categoryTitle,
                                     style: context.textTheme.titleLarge
                                         ?.copyWith(
                                           fontWeight: .bold,
@@ -243,7 +213,6 @@ class _TicketCardState extends State<TicketCard> {
                                         ),
                                   ),
 
-                                  //  Explanation
                                   Row(
                                     crossAxisAlignment: .center,
                                     mainAxisAlignment: .start,
@@ -251,11 +220,11 @@ class _TicketCardState extends State<TicketCard> {
                                     children: [
                                       detailRow(
                                         asset: "assets/svg/login.svg",
-                                        title: "SCI-FI",
+                                        title: "5 Tickets",
                                       ),
                                       detailRow(
-                                        asset: "assets/svg/login.svg",
-                                        title: "19:00 PM",
+                                        asset: "assets/svg/clock.svg",
+                                        title: "Pending",
                                       ),
                                     ],
                                   ),

@@ -5,7 +5,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:tickit/core/presentation/components/custom_filled_button.dart';
 import 'package:tickit/core/utils/extensions/context_extensions.dart';
 import 'package:tickit/features/ticket_receipt/presentation/pages/ticket_receipt.dart';
-import 'package:tickit/features/tickets/domain/model/ticket_model.dart';
+import 'package:tickit/features/ticket_category/domain/model/ticket_model.dart';
 
 import '../../../../core/presentation/components/custom_network_image.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -13,7 +13,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import '../../../../core/presentation/components/material_motion.dart';
 
 class TicketDetailPage extends StatefulWidget {
-  final TicketModel ticketModel;
+  final TicketCategoryModel ticketModel;
 
   const TicketDetailPage({super.key, required this.ticketModel});
 
@@ -54,10 +54,7 @@ class _TicketDetailPageState extends State<TicketDetailPage> {
         height: double.infinity,
         child: Stack(
           children: [
-            // ImageFiltered(
-            //     imageFilter: .blur(sigmaX: 20, sigmaY: 20),
-            //     child: CustomNetworkImage(url: widget.ticketModel.ticketCoverUrl)),
-            CustomNetworkImage(url: widget.ticketModel.ticketCoverUrl),
+            CustomNetworkImage(url: widget.ticketModel.categoryCoverUrl),
 
             BackdropFilter(
               filter: .blur(sigmaX: 15, sigmaY: 15),
@@ -118,7 +115,7 @@ class _TicketDetailPageState extends State<TicketDetailPage> {
                                 spacing: 32,
                                 children: [
                                   Text(
-                                    widget.ticketModel.ticketTitle,
+                                    widget.ticketModel.categoryTitle,
                                     textAlign: TextAlign.center,
                                     style: context.textTheme.titleLarge
                                         ?.copyWith(
@@ -177,7 +174,7 @@ class _TicketDetailPageState extends State<TicketDetailPage> {
                                       color: context.colors.surfaceColor,
                                     ),
                                     child: Text(
-                                      widget.ticketModel.ticketAmount
+                                      widget.ticketModel.categoryAmount
                                           .toCurrency(),
                                       textAlign: TextAlign.center,
                                       style: context.textTheme.titleLarge
@@ -359,7 +356,7 @@ class _TicketDetailPageState extends State<TicketDetailPage> {
                           ],
                         ),
                         child: CustomNetworkImage(
-                          url: widget.ticketModel.ticketCoverUrl,
+                          url: widget.ticketModel.categoryCoverUrl,
                           borderRadius: BorderRadius.circular(32),
                         ),
                       ),

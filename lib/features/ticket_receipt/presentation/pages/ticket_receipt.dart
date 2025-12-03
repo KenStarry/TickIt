@@ -3,14 +3,14 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:printing/printing.dart';
 import 'package:tickit/core/utils/extensions/context_extensions.dart';
-import 'package:tickit/features/tickets/domain/model/ticket_model.dart';
+import 'package:tickit/features/ticket_category/domain/model/ticket_model.dart';
 
 import '../../../../core/utils/functions/file_compression.dart';
 import '../../../../core/utils/functions/share_plus_utility.dart';
 import '../pdf/ticket_receipt_pdf.dart';
 
 class TicketReceipt extends StatefulWidget {
-  final TicketModel ticketModel;
+  final TicketCategoryModel ticketModel;
 
   const TicketReceipt({super.key, required this.ticketModel});
 
@@ -67,7 +67,7 @@ class _TicketReceiptState extends State<TicketReceipt> {
                   final file = await convertUint8ListToFile(
                     pdf,
                     path:
-                        '/Ticket-${widget.ticketModel.ticketTitle}_${DateTime.now().millisecondsSinceEpoch}.pdf',
+                        '/Ticket-${widget.ticketModel.categoryTitle}_${DateTime.now().millisecondsSinceEpoch}.pdf',
                   );
 
                   if (file == null) {

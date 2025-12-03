@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tickit/features/onboarding/presentation/onboarding.dart';
-import 'package:tickit/features/tickets/presentation/tickets_page.dart';
+import 'package:tickit/features/ticket_category/presentation/pages/ticket_categories_page.dart';
 
 final GlobalKey<NavigatorState> rootNavKey = GlobalKey<NavigatorState>();
 
@@ -14,7 +14,7 @@ final onboardingRoute = GoRoute(
 final ticketsRoute = GoRoute(
     path: '/tickets',
     name: 'tickets',
-    builder: (context, state) => TicketsPage());
+    builder: (context, state) => TicketCategoriesPage());
 
 /// app route configuration
 final GoRouter appRouter = GoRouter(

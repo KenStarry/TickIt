@@ -11,18 +11,15 @@ void drawTicketShape(pw.Context context, {
 }) {
   final canvas = context.canvas;
 
-  // 1. Start Path
   canvas.moveTo(0, 0);
   canvas.lineTo(width, 0);
 
-  // 2. Right Side + Hole
   canvas.lineTo(width, holeY - holeRadius);
 
-  // ERROR FIX: Use 'curveTo' instead of 'cubicTo'
   canvas.curveTo(
-      width - holeRadius, holeY - holeRadius, // Control Point 1 (Top corner of curve)
-      width - holeRadius, holeY + holeRadius, // Control Point 2 (Bottom corner of curve)
-      width, holeY + holeRadius               // End Point (Back on the edge)
+      width - holeRadius, holeY - holeRadius,
+      width - holeRadius, holeY + holeRadius,
+      width, holeY + holeRadius
   );
 
   canvas.lineTo(width, height);
@@ -31,7 +28,6 @@ void drawTicketShape(pw.Context context, {
   // 3. Left Side + Hole
   canvas.lineTo(0, holeY + holeRadius);
 
-  // ERROR FIX: Use 'curveTo' instead of 'cubicTo'
   canvas.curveTo(
       holeRadius, holeY + holeRadius, // Control Point 1
       holeRadius, holeY - holeRadius, // Control Point 2
