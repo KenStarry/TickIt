@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_extend/flutter_extend.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:tickit/core/presentation/components/custom_network_image.dart';
 import 'package:tickit/core/utils/extensions/context_extensions.dart';
 import 'package:tickit/features/tickets/presentation/components/ticket_card.dart';
 
@@ -69,8 +71,73 @@ class _TicketsPageState extends State<TicketsPage> {
         child: CustomScrollView(
           physics: const BouncingScrollPhysics(),
           slivers: [
-            SliverAppBar(title: Text("Tickets")),
+            SliverAppBar(
+              title: Row(
+                crossAxisAlignment: .center,
+                mainAxisAlignment: .start,
+                spacing: 16,
+                children: [
+                  IconButton(
+                    onPressed: () {},
+                    icon: SvgPicture.asset(
+                      "assets/svg/menu.svg",
+                      width: 26,
+                      height: 26,
+                      colorFilter: .mode(context.colors.iconColor, .srcIn),
+                    ),
+                  ),
+                  Expanded(
+                    child: Row(
+                      mainAxisAlignment: .end,
+                      crossAxisAlignment: .center,
+                      spacing: 16,
+                      children: [
+                        IconButton(
+                          onPressed: () {},
+                          icon: SvgPicture.asset(
+                            "assets/svg/bell.svg",
+                            width: 26,
+                            height: 26,
+                            colorFilter: .mode(
+                              context.colors.iconColor,
+                              .srcIn,
+                            ),
+                          ),
+                        ),
+
+                        Container(
+                          width: 45,
+                          height: 45,
+                          decoration: BoxDecoration(
+                            borderRadius: .circular(12),
+                          ),
+                          child: CustomNetworkImage(
+                            url:
+                                "https://images.unsplash.com/photo-1524502397800-2eeaad7c3fe5?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+                            borderRadius: .circular(12),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+              leadingWidth: 0,
+              automaticallyImplyLeading: false,
+              titleSpacing: 0,
+              backgroundColor: context.colors.backgroundColor,
+              surfaceTintColor: context.colors.backgroundColor,
+            ),
             SliverToBoxAdapter(child: SizedBox(height: 24)),
+
+            SliverToBoxAdapter(
+              child: Text("My Shows", style: context.textTheme.titleLarge?.copyWith(
+                fontWeight: .w700,
+                color: context.colors.textBlack600
+              )),
+            ),
+
+            SliverToBoxAdapter(child: SizedBox(height: 16)),
             //  All Tickets
             SliverList(
               delegate: SliverChildBuilderDelegate(
