@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_extend/flutter_extend.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:tickit/core/presentation/components/custom_network_image.dart';
-import 'package:tickit/features/ticket_detail/presentation/pages/ticket_detail_page.dart';
+import 'package:tickit/features/ticket_category_details/presentation/pages/ticket_category_detail_page.dart';
 import 'package:tickit/features/ticket_category/domain/model/ticket_category_model.dart';
 import 'package:tickit/features/tickets/presentation/bloc/tickets_bloc.dart';
 
@@ -191,10 +191,6 @@ class _TicketCategoryCardState extends State<TicketCategoryCard> {
                         ),
                       ),
 
-                      // CustomNetworkImage(
-                      //   url: widget.ticketModel.ticketCoverUrl,
-                      //   borderRadius: .circular(24),
-                      // ),
                       Align(
                         alignment: Alignment.bottomCenter,
                         child: Container(
@@ -308,7 +304,7 @@ class _TicketCategoryCardState extends State<TicketCategoryCard> {
               ),
               onClosed: (_) async {},
               openBuilder: (context, closeWidget) =>
-                  TicketDetailPage(ticketModel: widget.ticketModel),
+                  TicketCategoryDetailPage(categoryModel: widget.ticketModel),
             ),
           ),
         ],
