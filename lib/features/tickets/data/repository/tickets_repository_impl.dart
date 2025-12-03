@@ -27,7 +27,10 @@ class TicketsRepositoryImpl extends TicketsRepository {
           ticketResolved: false,
           ticketUserAvatarUrl: generator
               .generateRandomString(10)
-              .avatar(style: DiceBearStyle.adventurer),
+              .avatar(
+                style: DiceBearStyle.adventurer,
+                type: DiceBearImageType.svg,
+              ),
         );
       }).toList();
     } else {

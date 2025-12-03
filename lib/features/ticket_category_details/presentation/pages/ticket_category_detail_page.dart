@@ -9,6 +9,7 @@ import 'package:tickit/core/utils/extensions/context_extensions.dart';
 import 'package:tickit/features/ticket_receipt/presentation/pages/ticket_receipt.dart';
 import 'package:tickit/features/ticket_category/domain/model/ticket_category_model.dart';
 import 'package:tickit/features/tickets/presentation/components/ticket_card.dart';
+import 'package:tickit/features/tickets/presentation/pages/ticket_detail_page.dart';
 
 import '../../../../core/presentation/components/custom_network_image.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -168,7 +169,7 @@ class _TicketCategoryDetailPageState extends State<TicketCategoryDetailPage> {
                                         child: Container(
                                           width: double.infinity,
                                           height: double.infinity,
-                                          margin: EdgeInsets.only(top: 100),
+                                          margin: EdgeInsets.only(top: 200),
                                           decoration: BoxDecoration(
                                             gradient: LinearGradient(
                                               begin: Alignment.topCenter,
@@ -261,15 +262,33 @@ class _TicketCategoryDetailPageState extends State<TicketCategoryDetailPage> {
 
                       return SliverList(
                         delegate: SliverChildBuilderDelegate(
-                          (context, index) =>
-                              TicketCard(ticketModel: totalTickets[index]),
+                          (context, index) => true
+                              ? addMaterialContainerMotion(
+                                  context,
+                                  closedBuilder: (context, openWidget) =>
+                                      TicketCard(
+                                        ticketModel: totalTickets[index],
+                                        onTap: () {
+                                          openWidget();
+                                        },
+                                      ),
+                                  onClosed: (_) async {},
+                                  openBuilder: (context, closeWidget) =>
+                                      TicketDetailPage(
+                                        ticketModel: totalTickets[index],
+                                      ),
+                                )
+                              : TicketCard(
+                                  ticketModel: totalTickets[index],
+                                  onTap: () {},
+                                ),
                           childCount: 10,
                         ),
                       );
                     },
                   ),
 
-                  SliverToBoxAdapter(child: SizedBox(height: 1000)),
+                  SliverToBoxAdapter(child: SizedBox(height: 100)),
                 ],
               )
             : Stack(

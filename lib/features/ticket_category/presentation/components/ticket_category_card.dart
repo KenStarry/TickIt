@@ -103,9 +103,7 @@ class _TicketCategoryCardState extends State<TicketCategoryCard> {
                               borderRadius: .circular(8),
                               color: context.colors.surfaceColor,
                             ),
-                            child: CustomNetworkImage(
-                              url: true
-                                  ? tickets.tickets
+                            child: SvgPicture.network(tickets.tickets
                                             .where(
                                               (ticket) =>
                                                   ticket.ticketCategoryId ==
@@ -115,11 +113,7 @@ class _TicketCategoryCardState extends State<TicketCategoryCard> {
                                             .take(3)
                                             .toList()[index]
                                             .ticketUserAvatarUrl ??
-                                        ''
-                                  : 5.randomString.avatar(
-                                      style: DiceBearStyle.adventurer,
-                                    ),
-                              borderRadius: .circular(100),
+                                        '',
                             ),
                           ),
                         ),
