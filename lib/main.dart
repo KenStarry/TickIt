@@ -2,9 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:tickit/core/theme/models/theme_config.dart';
 import 'package:tickit/core/theme/tickit_theme.dart';
 
+import 'core/di/locator.dart';
 import 'core/routing/app_router.dart';
 
-void main() {
+void main() async {
+
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await setupLocator();
+
   runApp(const TickIt());
 }
 
