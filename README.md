@@ -18,6 +18,10 @@ To explore the app:
 - **Email:** any valid email format
 - **Password:** `Pass123`
 
+## 📱 **Download APK**
+👉 [Get the latest release APK](https://github.com/KenStarry/TickIt/releases/tag/apk)
+
+
 ---
 
 
@@ -125,11 +129,6 @@ Organized. Scalable. Predictable. Ready for growth.
 - DI for painless testing and expansion
 
 This reads like a feature list, but it’s actually just… everything.
-
----
-
-### 📱 **Download APK**
-👉 [Get the latest release APK](https://github.com/KenStarry/TickIt/releases/tag/apk)
 
 ---
 
