@@ -9,6 +9,7 @@ import 'package:tickit/features/tickets/presentation/bloc/tickets_bloc.dart';
 import '../../../../core/presentation/components/avatar.dart';
 import '../../../dashboard/domain/enum/feedback_enum.dart';
 import '../../../dashboard/presentation/cubit/feedback_cubit.dart';
+import '../../../dashboard/presentation/cubit/navigation_cubit.dart';
 import '../../domain/model/ticket_category_model.dart';
 import '../components/ticket_category_card.dart';
 
@@ -30,12 +31,12 @@ class _TicketCategoriesPageState extends State<TicketCategoriesPage> {
       categoryAmount: 150,
     ),
     TicketCategoryModel(
-      categoryId: 'cat_002',
-      categoryTitle: 'Performance & Speed',
+      categoryId: 'cat_004',
+      categoryTitle: 'Billing & Account Management',
       categoryCoverUrl:
-          "https://i.pinimg.com/1200x/94/a6/a1/94a6a129e3a9e54495805d5e545e356f.jpg",
-      categoryAsset: "assets/images/bg_2.png",
-      categoryAmount: 45,
+      "https://i.pinimg.com/1200x/f5/4b/15/f54b1561caf346898654f1ec7b444cc0.jpg",
+      categoryAsset: "assets/images/bg_4.png",
+      categoryAmount: 25,
     ),
     TicketCategoryModel(
       categoryId: 'cat_003',
@@ -46,12 +47,12 @@ class _TicketCategoriesPageState extends State<TicketCategoriesPage> {
       categoryAmount: 80,
     ),
     TicketCategoryModel(
-      categoryId: 'cat_004',
-      categoryTitle: 'Billing & Account Management',
+      categoryId: 'cat_002',
+      categoryTitle: 'Performance & Speed',
       categoryCoverUrl:
-          "https://i.pinimg.com/1200x/f5/4b/15/f54b1561caf346898654f1ec7b444cc0.jpg",
-      categoryAsset: "assets/images/bg_4.png",
-      categoryAmount: 25,
+      "https://i.pinimg.com/1200x/94/a6/a1/94a6a129e3a9e54495805d5e545e356f.jpg",
+      categoryAsset: "assets/images/bg_2.png",
+      categoryAmount: 45,
     ),
     TicketCategoryModel(
       categoryId: 'cat_005',
@@ -116,14 +117,14 @@ class _TicketCategoriesPageState extends State<TicketCategoriesPage> {
                         ),
 
                         UserAvatar(
-                          imageUrl: 'https://plus.unsplash.com/premium_photo-1688350808212-4e6908a03925?q=80&w=1469&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+                          imageUrl:
+                              'https://plus.unsplash.com/premium_photo-1688350808212-4e6908a03925?q=80&w=1469&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
                           size: Size(45, 45),
                           onTap: () {
-                            // context.read<AuthBloc>().add(AuthSignOutEvent());
-                            context.read<FeedbackCubit>().show(
-                                'Oops, something went wrong.',
-                                type: FeedbackType.success);
-                            // context.goNamed("profile");
+                            context.goNamed("profile");
+                            context.read<NavigationCubit>().setTab(
+                              TabModel(title: "Profile", index: 1),
+                            );
                           },
                         ),
                       ],

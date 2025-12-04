@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_extend/flutter_extend.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:tickit/core/presentation/components/custom_network_image.dart';
+import 'package:tickit/features/dashboard/presentation/components/global_overlay.dart';
 import 'package:tickit/features/ticket_category_details/presentation/pages/ticket_category_detail_page.dart';
 import 'package:tickit/features/ticket_category/domain/model/ticket_category_model.dart';
 import 'package:tickit/features/tickets/domain/model/ticket_model.dart';
@@ -53,7 +54,7 @@ class _TicketCategoryCardState extends State<TicketCategoryCard> {
 
     return Container(
       width: double.infinity,
-      height: 280,
+      height: 250,
       decoration: BoxDecoration(borderRadius: BorderRadius.circular(24)),
       child: Row(
         mainAxisAlignment: .center,
@@ -171,6 +172,8 @@ class _TicketCategoryCardState extends State<TicketCategoryCard> {
                 onTap: () {
                   //  Open Details Page
                   openWidget();
+
+                  showNavigation.value = false;
                 },
                 child: Container(
                   width: double.infinity,
@@ -193,7 +196,7 @@ class _TicketCategoryCardState extends State<TicketCategoryCard> {
                         child: Container(
                           width: double.infinity,
                           height: double.infinity,
-                          margin: EdgeInsets.only(top: 50),
+                          margin: EdgeInsets.only(top: 100),
                           decoration: BoxDecoration(
                             // color: context.colors.backgroundColor,
                             borderRadius: BorderRadius.only(
@@ -233,7 +236,7 @@ class _TicketCategoryCardState extends State<TicketCategoryCard> {
                       Container(
                         width: double.infinity,
                         height: double.infinity,
-                        padding: const .symmetric(horizontal: 16, vertical: 16),
+                        padding: const .only(left: 16, right: 20, top: 16, bottom: 16),
                         child: Column(
                           crossAxisAlignment: .start,
                           mainAxisAlignment: .end,
@@ -244,7 +247,7 @@ class _TicketCategoryCardState extends State<TicketCategoryCard> {
                               widget.ticketModel.categoryTitle,
                               style: context.textTheme.titleLarge?.copyWith(
                                 fontWeight: .bold,
-                                fontSize: 24,
+                                fontSize: 22,
                                 color: Colors.white,
                               ),
                             ),
@@ -304,7 +307,9 @@ class _TicketCategoryCardState extends State<TicketCategoryCard> {
                   ),
                 ),
               ),
-              onClosed: (_) async {},
+              onClosed: (_) async {
+                showNavigation.value = true;
+              },
               openBuilder: (context, closeWidget) =>
                   TicketCategoryDetailPage(categoryModel: widget.ticketModel),
             ),
