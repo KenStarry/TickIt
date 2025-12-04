@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/presentation/components/feedback_banner.dart';
+import 'navigation_basic.dart';
 
 class GlobalOverlay extends StatefulWidget {
   final Widget child;
@@ -20,6 +21,8 @@ class _GlobalOverlayState extends State<GlobalOverlay> {
     return Stack(
       children: [
         widget.child,
+
+        Align(alignment: Alignment.bottomCenter, child: BottomNavigation()),
 
         const FeedbackBanner(),
       ],

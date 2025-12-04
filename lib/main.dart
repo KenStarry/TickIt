@@ -4,6 +4,7 @@ import 'package:path_provider/path_provider.dart' as path_provider;
 import 'package:tickit/core/theme/models/theme_config.dart';
 import 'package:tickit/core/theme/tickit_theme.dart';
 import 'package:tickit/features/dashboard/presentation/cubit/feedback_cubit.dart';
+import 'package:tickit/features/dashboard/presentation/cubit/navigation_cubit.dart';
 import 'package:tickit/features/tickets/presentation/bloc/ticket_resolver_cubit.dart';
 import 'package:tickit/features/tickets/presentation/bloc/tickets_bloc.dart';
 
@@ -27,6 +28,7 @@ void main() async {
         BlocProvider(create: (context) => TicketsBloc()),
         BlocProvider(create: (context) => TicketResolverCubit()),
         BlocProvider(create: (context) => FeedbackCubit()),
+        BlocProvider(create: (context) => NavigationCubit()),
       ],
       child: const TickIt(),
     ),
