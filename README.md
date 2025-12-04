@@ -1,4 +1,4 @@
-# tickit
+<img width="1024" height="500" alt="TickIt Cover" src="https://github.com/user-attachments/assets/e489d5b1-0fdb-424c-8964-b18c941c51b6" /># tickit
 
 Ticket Resolver App
 
