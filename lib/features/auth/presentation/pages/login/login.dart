@@ -528,7 +528,7 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
                           GestureDetector(
                                 onTap: () {
                                   context.read<FeedbackCubit>().show(
-                                    "Coming Soon",
+                                    "My first task as your new Engineer: finish this screen. ✅",
                                     type: FeedbackType.success,
                                   );
                                 },

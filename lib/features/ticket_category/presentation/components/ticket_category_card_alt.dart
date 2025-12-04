@@ -137,6 +137,11 @@ class _TicketCategoryCardAltState extends State<TicketCategoryCardAlt> {
                                   Expanded(child: tickets is TicketsSuccess
                                       ? AvatarOverlays(
                                     isSvg: true,
+                                    label: "${totalTickets.length}+ Tickets",
+                                    labelTextStyling: context.textTheme.bodySmall?.copyWith(
+                                      fontWeight: .bold,
+                                      color: context.colors.iconColor.withValues(alpha: 0.9),
+                                    ),
                                     avatarUrls: tickets.tickets
                                         .where(
                                           (ticket) =>
@@ -155,13 +160,13 @@ class _TicketCategoryCardAltState extends State<TicketCategoryCardAlt> {
                                     crossAxisAlignment: .center,
                                     spacing: 16,
                                     children: [
-                                      detailRow(
-                                        asset: "assets/svg/ticket.svg",
-                                        title: "${totalTickets.length}",
-                                      ),
+                                      // detailRow(
+                                      //   asset: "assets/svg/ticket.svg",
+                                      //   title: "${totalTickets.length}",
+                                      // ),
                                       detailRow(
                                         asset: "assets/svg/clock.svg",
-                                        title: "$unresolvedTicketsCount",
+                                        title: "$unresolvedTicketsCount Pending",
                                       ),
                                     ],
                                   )

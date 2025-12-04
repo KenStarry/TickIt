@@ -16,6 +16,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 import '../../../../core/presentation/components/material_motion.dart';
 import '../../../tickets/domain/model/ticket_model.dart';
+import '../../../tickets/presentation/bloc/ticket_resolver_cubit.dart';
 import '../../../tickets/presentation/bloc/tickets_bloc.dart';
 
 class TicketCategoryDetailPage extends StatefulWidget {
@@ -38,8 +39,8 @@ class _TicketCategoryDetailPageState extends State<TicketCategoryDetailPage> {
     children: [
       SvgPicture.asset(
         asset,
-        width: 16,
-        height: 16,
+        width: 24,
+        height: 24,
         colorFilter: ColorFilter.mode(
           context.colors.iconColor.withValues(alpha: 0.9),
           .srcIn,
@@ -47,7 +48,7 @@ class _TicketCategoryDetailPageState extends State<TicketCategoryDetailPage> {
       ),
       Text(
         title,
-        style: context.textTheme.bodySmall?.copyWith(fontWeight: .bold),
+        style: context.textTheme.bodyLarge?.copyWith(fontWeight: .bold),
       ),
     ],
   );
@@ -223,6 +224,7 @@ class _TicketCategoryDetailPageState extends State<TicketCategoryDetailPage> {
                                                 MainAxisAlignment.end,
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
+                                            spacing: 16,
                                             children: [
                                               Text(
                                                 widget
@@ -232,6 +234,55 @@ class _TicketCategoryDetailPageState extends State<TicketCategoryDetailPage> {
                                                     .textTheme
                                                     .titleLarge
                                                     ?.copyWith(fontSize: 32),
+                                              ),
+
+                                              BlocBuilder<TicketResolverCubit, Set<String>>(
+                                                builder: (context, resolvedTicketsState) {
+                                                  return BlocBuilder<TicketsBloc, TicketsState>(
+                                                    builder: (context, ticketsState) {
+                                                      final totalTickets =
+                                                      ticketsState is TicketsSuccess
+                                                          ? ticketsState.tickets
+                                                          .where(
+                                                            (ticket) =>
+                                                        ticket.ticketCategoryId ==
+                                                            widget
+                                                                .categoryModel
+                                                                .categoryId,
+                                                      )
+                                                          .toList()
+                                                          : <TicketModel>[];
+
+                                                      final unresolvedTicketsCount =
+                                                      ticketsState is TicketsSuccess
+                                                          ? totalTickets.length -
+                                                          (resolvedTicketsState.where(
+                                                                (id) => totalTickets
+                                                                .map((t) => t.ticketId)
+                                                                .contains(id),
+                                                          )).length
+                                                          : 0;
+
+                                                      return Row(
+                                                        crossAxisAlignment: .center,
+                                                        mainAxisAlignment: .start,
+                                                        spacing: 24,
+                                                        children: [
+                                                          detailRow(
+                                                            asset: "assets/svg/ticket.svg",
+                                                            title:
+                                                            "${totalTickets.length} Tickets",
+                                                          ),
+                                                          detailRow(
+                                                            asset: "assets/svg/clock.svg",
+                                                            title:
+                                                            "$unresolvedTicketsCount Pending",
+                                                          ),
+                                                        ],
+                                                      );
+                                                    },
+                                                  );
+                                                },
                                               ),
                                             ],
                                           ),

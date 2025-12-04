@@ -285,7 +285,7 @@ class _TicketCategoryCardState extends State<TicketCategoryCard> {
                                       spacing: 24,
                                       children: [
                                         detailRow(
-                                          asset: "assets/svg/login.svg",
+                                          asset: "assets/svg/ticket.svg",
                                           title:
                                               "${totalTickets.length} Tickets",
                                         ),

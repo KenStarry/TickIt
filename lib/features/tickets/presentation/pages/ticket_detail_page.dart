@@ -8,6 +8,8 @@ import 'package:go_router/go_router.dart';
 import 'package:tickit/core/utils/extensions/context_extensions.dart';
 import 'package:tickit/features/tickets/domain/model/ticket_model.dart';
 
+import '../../../dashboard/domain/enum/feedback_enum.dart';
+import '../../../dashboard/presentation/cubit/feedback_cubit.dart';
 import '../bloc/ticket_resolver_cubit.dart';
 
 class TicketDetailPage extends StatefulWidget {
@@ -112,6 +114,9 @@ class _TicketDetailPageState extends State<TicketDetailPage> {
 
                     BlocBuilder<TicketResolverCubit, Set<String>>(
                       builder: (context, resolvedTicketsState) {
+                        final isResolved = resolvedTicketsState.contains(
+                          widget.ticketModel.ticketId,
+                        );
                         return GestureDetector(
                           onTap: () async {
                             // _triggerAnimation();
@@ -126,6 +131,11 @@ class _TicketDetailPageState extends State<TicketDetailPage> {
 
                             // Simulate a network request (e.g., 2 seconds)
                             await Future.delayed(const Duration(seconds: 2));
+
+                            context.read<FeedbackCubit>().show(
+                              "Ticket Resolved!",
+                              type: FeedbackType.success,
+                            );
 
                             //  Update
                             context.pop();
@@ -146,6 +156,8 @@ class _TicketDetailPageState extends State<TicketDetailPage> {
                               borderRadius: BorderRadius.circular(100),
                               color: _ticketLoading
                                   ? context.colors.surfaceColor
+                                  : isResolved
+                                  ? Colors.transparent
                                   : context.colors.primaryColor,
                             ),
                             child: Center(
@@ -161,17 +173,16 @@ class _TicketDetailPageState extends State<TicketDetailPage> {
                                         ),
                                       )
                                     : Text(
-                                        resolvedTicketsState.contains(
-                                              widget.ticketModel.ticketId,
-                                            )
-                                            ? "Resolved"
-                                            : "Resolve",
+                                        isResolved ? "Unresolve" : "Resolve",
                                         style: Theme.of(context)
                                             .textTheme
                                             .bodyLarge!
                                             .copyWith(
-                                              color:
-                                                  context.colors.onPrimaryColor,
+                                              color: isResolved
+                                                  ? context.colors.primaryColor
+                                                  : context
+                                                        .colors
+                                                        .onPrimaryColor,
                                               fontWeight: FontWeight.w700,
                                             ),
                                       ),
@@ -181,13 +192,6 @@ class _TicketDetailPageState extends State<TicketDetailPage> {
                         );
                       },
                     ),
-
-                    // CustomFilledButton(
-                    //   text: "Resolve",
-                    //   onTap: () {
-                    //     //  Add this id to the list of resolved tickets
-                    //   },
-                    // ),
                   ],
                 ),
               ),

@@ -183,7 +183,7 @@ class _UserProfileSettingsSectionState
                                       break;
                                     default:
                                       context.read<FeedbackCubit>().show(
-                                        "Don't worry. This is coming soon!",
+                                        "My first task as your new Engineer: finish this screen. ✅",
                                         type: FeedbackType.info,
                                       );
                                       break;
@@ -192,7 +192,7 @@ class _UserProfileSettingsSectionState
                               ),
                               openBuilder: (context, closeWidget) =>
                               switch (settingCard.label) {
-                                _ => Text("Coming Soon"),
+                                _ => Text("My first task as your new Engineer: finish this screen. ✅"),
                               }, onClosed: (Never? p1) {  },
                             );
                           },

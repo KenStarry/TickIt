@@ -7,7 +7,9 @@ import 'package:tickit/core/utils/extensions/context_extensions.dart';
 import 'package:tickit/features/ticket_category/presentation/components/ticket_category_card_alt.dart';
 import 'package:tickit/features/tickets/presentation/bloc/tickets_bloc.dart';
 import '../../../../core/presentation/components/avatar.dart';
+import '../../../dashboard/domain/enum/feedback_enum.dart';
 import '../../../dashboard/presentation/components/global_overlay.dart';
+import '../../../dashboard/presentation/cubit/feedback_cubit.dart';
 import '../../../dashboard/presentation/cubit/navigation_cubit.dart';
 import '../../domain/model/ticket_category_model.dart';
 import '../components/ticket_category_card.dart';
@@ -94,7 +96,12 @@ class _TicketCategoriesPageState extends State<TicketCategoriesPage> {
                 spacing: 16,
                 children: [
                   IconButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      context.read<FeedbackCubit>().show(
+                        "My first task as your new Engineer: finish this screen. ✅",
+                        type: FeedbackType.info,
+                      );
+                    },
                     icon: SvgPicture.asset(
                       "assets/svg/menu.svg",
                       width: 26,
@@ -109,7 +116,12 @@ class _TicketCategoriesPageState extends State<TicketCategoriesPage> {
                       spacing: 16,
                       children: [
                         IconButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            context.read<FeedbackCubit>().show(
+                              "My first task as your new Engineer: finish this screen. ✅",
+                              type: FeedbackType.info,
+                            );
+                          },
                           icon: SvgPicture.asset(
                             "assets/svg/bell.svg",
                             width: 26,
