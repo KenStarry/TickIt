@@ -11,6 +11,7 @@ class AvatarOverlays extends StatefulWidget {
   final TextStyle? labelTextStyling;
   final String? label;
   final bool glassMorphic;
+  final bool isSvg;
   final int maximumAvatars;
 
   const AvatarOverlays({
@@ -21,6 +22,7 @@ class AvatarOverlays extends StatefulWidget {
     this.containerHeight,
     this.labelTextStyling,
     this.glassMorphic = false,
+    this.isSvg = false,
     this.label,
     this.maximumAvatars = 3,
   });
@@ -57,6 +59,7 @@ class _AvatarOverlaysState extends State<AvatarOverlays> {
                       ),
                       child: UserAvatar(
                         imageUrl: url,
+                        isSvg: widget.isSvg,
                         size: widget.avatarSize ?? Size(40, 40),
                       ),
                     ),

@@ -107,16 +107,16 @@ class _TicketCategoryCardState extends State<TicketCategoryCard> {
                               color: context.colors.surfaceColor,
                             ),
                             child: SvgPicture.network(
-                              tickets.tickets
-                                      .where(
-                                        (ticket) =>
-                                            ticket.ticketCategoryId ==
-                                            widget.ticketModel.categoryId,
-                                      )
-                                      .toList()
-                                      .take(3)
-                                      .toList()[index]
-                                      .ticketUserAvatarUrl ??
+                                tickets.tickets
+                                        .where(
+                                          (ticket) =>
+                                              ticket.ticketCategoryId ==
+                                              widget.ticketModel.categoryId,
+                                        )
+                                        .toList()
+                                        .take(3)
+                                        .toList()[index]
+                                        .ticketUserAvatarUrl ??
                                   '',
                             ),
                           ),

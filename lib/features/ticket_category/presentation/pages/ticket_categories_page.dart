@@ -3,13 +3,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_extend/flutter_extend.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
-import 'package:tickit/core/presentation/components/custom_network_image.dart';
 import 'package:tickit/core/utils/extensions/context_extensions.dart';
+import 'package:tickit/features/ticket_category/presentation/components/ticket_category_card_alt.dart';
 import 'package:tickit/features/tickets/presentation/bloc/tickets_bloc.dart';
 import '../../../../core/presentation/components/avatar.dart';
-import '../../../dashboard/domain/enum/feedback_enum.dart';
 import '../../../dashboard/presentation/components/global_overlay.dart';
-import '../../../dashboard/presentation/cubit/feedback_cubit.dart';
 import '../../../dashboard/presentation/cubit/navigation_cubit.dart';
 import '../../domain/model/ticket_category_model.dart';
 import '../components/ticket_category_card.dart';
@@ -22,7 +20,6 @@ class TicketCategoriesPage extends StatefulWidget {
 }
 
 class _TicketCategoriesPageState extends State<TicketCategoriesPage> {
-
   bool isList = false;
 
   final List<TicketCategoryModel> dummyCategorys = [
@@ -38,7 +35,7 @@ class _TicketCategoriesPageState extends State<TicketCategoriesPage> {
       categoryId: 'cat_004',
       categoryTitle: 'Billing & Account Management',
       categoryCoverUrl:
-      "https://i.pinimg.com/1200x/f5/4b/15/f54b1561caf346898654f1ec7b444cc0.jpg",
+          "https://i.pinimg.com/1200x/f5/4b/15/f54b1561caf346898654f1ec7b444cc0.jpg",
       categoryAsset: "assets/images/bg_4.png",
       categoryAmount: 25,
     ),
@@ -54,7 +51,7 @@ class _TicketCategoriesPageState extends State<TicketCategoriesPage> {
       categoryId: 'cat_002',
       categoryTitle: 'Performance & Speed',
       categoryCoverUrl:
-      "https://i.pinimg.com/1200x/94/a6/a1/94a6a129e3a9e54495805d5e545e356f.jpg",
+          "https://i.pinimg.com/1200x/94/a6/a1/94a6a129e3a9e54495805d5e545e356f.jpg",
       categoryAsset: "assets/images/bg_2.png",
       categoryAmount: 45,
     ),
@@ -163,7 +160,10 @@ class _TicketCategoriesPageState extends State<TicketCategoriesPage> {
 
                   //  Toggler
                   Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    decoration: BoxDecoration(
+                      borderRadius: .circular(100),
+                      color: context.colors.surfaceColor,
+                    ),
                     child: Row(
                       crossAxisAlignment: .center,
                       mainAxisAlignment: .center,
@@ -207,7 +207,7 @@ class _TicketCategoriesPageState extends State<TicketCategoriesPage> {
                         ),
                       ],
                     ),
-                  )
+                  ),
                 ],
               ),
             ),
@@ -216,8 +216,14 @@ class _TicketCategoriesPageState extends State<TicketCategoriesPage> {
             //  All Categorys
             SliverList(
               delegate: SliverChildBuilderDelegate(
-                (context, index) =>
-                    TicketCategoryCard(ticketModel: dummyCategorys[index]),
+                (context, index) => AnimatedSwitcher(
+                  duration: 500.milliSeconds,
+                  child: isList
+                      ? TicketCategoryCardAlt(
+                          ticketModel: dummyCategorys[index],
+                        )
+                      : TicketCategoryCard(ticketModel: dummyCategorys[index]),
+                ),
                 childCount: dummyCategorys.length,
               ),
             ),

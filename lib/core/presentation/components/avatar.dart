@@ -9,6 +9,7 @@ class UserAvatar extends StatelessWidget {
   final String imageUrl;
   final BorderRadius? borderRadius;
   final Size? size;
+  final bool isSvg;
   final VoidCallback? onTap;
 
   const UserAvatar({
@@ -16,6 +17,7 @@ class UserAvatar extends StatelessWidget {
     required this.imageUrl,
     this.borderRadius,
     this.size,
+    this.isSvg = false,
     this.onTap,
   });
 
@@ -38,16 +40,23 @@ class UserAvatar extends StatelessWidget {
                     borderRadius:
                         borderRadius ??
                         BorderRadius.circular((size?.width ?? 50) * 2),
-                    child: CachedNetworkImage(
-                      imageUrl: imageUrl,
-                      width: double.infinity,
-                      height: double.infinity,
-                      fit: BoxFit.cover,
-                      placeholder: (context, url) =>
-                          Center(child: CircularProgressIndicator()),
-                      errorWidget: (context, url, error) =>
-                          Icon(Icons.person_rounded),
-                    ),
+                    child: isSvg
+                        ? SvgPicture.network(
+                            imageUrl,
+                            width: double.infinity,
+                            height: double.infinity,
+                            fit: BoxFit.cover,
+                          )
+                        : CachedNetworkImage(
+                            imageUrl: imageUrl,
+                            width: double.infinity,
+                            height: double.infinity,
+                            fit: BoxFit.cover,
+                            placeholder: (context, url) =>
+                                Center(child: CircularProgressIndicator()),
+                            errorWidget: (context, url, error) =>
+                                Icon(Icons.person_rounded),
+                          ),
                   ),
           ],
         ),
