@@ -21,6 +21,9 @@ class TicketCategoriesPage extends StatefulWidget {
 }
 
 class _TicketCategoriesPageState extends State<TicketCategoriesPage> {
+
+  bool isList = false;
+
   final List<TicketCategoryModel> dummyCategorys = [
     TicketCategoryModel(
       categoryId: 'cat_001',
@@ -141,12 +144,66 @@ class _TicketCategoriesPageState extends State<TicketCategoriesPage> {
             SliverToBoxAdapter(child: SizedBox(height: 24)),
 
             SliverToBoxAdapter(
-              child: Text(
-                "Ticket Categories",
-                style: context.textTheme.titleLarge?.copyWith(
-                  fontWeight: .w700,
-                  color: context.colors.textBlack800,
-                ),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      "Ticket Categories",
+                      style: context.textTheme.titleLarge?.copyWith(
+                        fontWeight: .w700,
+                        color: context.colors.textBlack800,
+                      ),
+                    ),
+                  ),
+
+                  //  Toggler
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: Row(
+                      crossAxisAlignment: .center,
+                      mainAxisAlignment: .center,
+                      children: [
+                        IconButton(
+                          onPressed: () {
+                            setState(() {
+                              isList = false;
+                            });
+                          },
+                          icon: SvgPicture.asset(
+                            "assets/svg/gridview_${isList ? 'outlined' : 'filled'}.svg",
+                            width: 24,
+                            height: 24,
+                            colorFilter: ColorFilter.mode(
+                              isList
+                                  ? context.colors.grey500
+                                  : Theme.of(context).colorScheme.primary,
+                              BlendMode.srcIn,
+                            ),
+                          ),
+                        ),
+
+                        IconButton(
+                          onPressed: () {
+                            setState(() {
+                              isList = true;
+                            });
+                          },
+                          icon: SvgPicture.asset(
+                            "assets/svg/listview_${isList ? 'filled' : 'outlined'}.svg",
+                            width: 24,
+                            height: 24,
+                            colorFilter: ColorFilter.mode(
+                              isList
+                                  ? Theme.of(context).colorScheme.primary
+                                  : context.colors.grey500,
+                              BlendMode.srcIn,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  )
+                ],
               ),
             ),
 
