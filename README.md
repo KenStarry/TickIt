@@ -1,4 +1,4 @@
-<img width="auto" height="auto" alt="TickIt Cover" src="https://github.com/user-attachments/assets/e489d5b1-0fdb-424c-8964-b18c941c51b6" /># tickit
+<img width="auto" height="auto" alt="TickIt Cover" src="https://github.com/user-attachments/assets/e489d5b1-0fdb-424c-8964-b18c941c51b6" />
 
 # ⚡ Ticket Resolution App
 ### _A Flutter experience crafted with intention, depth… and a little suspense._
