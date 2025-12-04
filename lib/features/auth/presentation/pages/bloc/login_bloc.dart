@@ -31,6 +31,10 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         const Duration(seconds: 2),
       );
 
+      if (event.password != "Pass123") {
+        throw Exception("Incorrect Email or Password");
+      }
+
       await repo.setLoginToken(token, email: event.userEmail);
 
       emit(LoginSuccess());
