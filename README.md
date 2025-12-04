@@ -119,6 +119,11 @@ This reads like a feature list, but it’s actually just… everything.
 
 ---
 
+### 📱 **Download APK**
+👉 [Get the latest release APK](https://github.com/KenStarry/TickIt/releases/tag/apk)
+
+---
+
 ## 🧱 Running the Experience
 ### 1. Clone The Repo
 ```bash
@@ -132,4 +137,23 @@ flutter run
 flutter build apk --release
 ```
 
-**Open It, Feel It, Test It.**
+---
+
+### ✨ Why This Matters
+
+This project is both a solution and a demonstration —
+not just of Flutter skill,
+but of craftsmanship, architectural discipline, design intuition, and attention to detail.
+
+The requirement was to build a ticket app.
+The opportunity was to show what a refined Flutter experience can look like.
+
+And that’s exactly what this repository contains.
+
+### 📝 Final Note
+
+Thank you for taking the time to explore this project.
+If the code, craft, or polish resonates with you,
+I’d be excited to carry this same level of energy and excellence into the InterIntel team.
+
+**Dive in - the app is waiting.**
