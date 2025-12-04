@@ -96,6 +96,24 @@ class _OnboardingState extends State<Onboarding> with TickerProviderStateMixin {
                               style: Theme.of(context).textTheme.titleLarge
                                   ?.copyWith(fontSize: 50, color: Colors.white),
                             )
+                            .animate(autoPlay: true, delay: 500.milliseconds)
+                            .moveY(
+                              begin: 100,
+                              end: -20,
+                              duration: 500.milliseconds,
+                              curve: Curves.ease,
+                            )
+                            .fadeIn(
+                              duration: 500.milliseconds,
+                              curve: Curves.ease,
+                            )
+                            .then()
+                            .moveY(
+                              duration: 500.milliseconds,
+                              begin: 0,
+                              end: 20,
+                              curve: Curves.ease,
+                            )
                             .animate(
                               autoPlay: false,
                               controller: _titleAnimation,
@@ -120,8 +138,28 @@ class _OnboardingState extends State<Onboarding> with TickerProviderStateMixin {
                         Text(
                               "Resolve Tickets with ease",
                               style: Theme.of(context).textTheme.bodyMedium
-                                  ?.copyWith(fontWeight: FontWeight.w600,
-                              color: Colors.white),
+                                  ?.copyWith(
+                                    fontWeight: FontWeight.w600,
+                                    color: Colors.white,
+                                  ),
+                            )
+                            .animate(autoPlay: true, delay: 700.milliseconds)
+                            .moveY(
+                              begin: 100,
+                              end: -20,
+                              duration: 500.milliseconds,
+                              curve: Curves.ease,
+                            )
+                            .fadeIn(
+                              duration: 500.milliseconds,
+                              curve: Curves.ease,
+                            )
+                            .then()
+                            .moveY(
+                              duration: 500.milliseconds,
+                              begin: 0,
+                              end: 20,
+                              curve: Curves.ease,
                             )
                             .animate(
                               autoPlay: false,
@@ -154,35 +192,56 @@ class _OnboardingState extends State<Onboarding> with TickerProviderStateMixin {
                     spacing: 24,
                     children: [
                       Text(
-                        "Start Here",
-                        style: Theme.of(context).textTheme.bodyMedium
-                            ?.copyWith(fontWeight: FontWeight.w600,
-                            color: Colors.white),
-                      )
+                            "Start Here",
+                            style: Theme.of(context).textTheme.bodyMedium
+                                ?.copyWith(
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.white,
+                                ),
+                          )
+                          .animate(autoPlay: true, delay: 1000.milliseconds)
+                          .moveX(
+                            begin: 100,
+                            end: -20,
+                            duration: 500.milliseconds,
+                            curve: Curves.ease,
+                          )
+                          .fadeIn(
+                            duration: 500.milliseconds,
+                            curve: Curves.ease,
+                          )
+                          .then()
+                          .moveX(
+                            duration: 500.milliseconds,
+                            begin: 0,
+                            end: 20,
+                            curve: Curves.ease,
+                          )
                           .animate(
-                        autoPlay: false,
-                        controller: _subTitleAnimation,
-                      )
+                            autoPlay: false,
+                            controller: _subTitleAnimation,
+                          )
                           .moveY(
-                        duration: 300.milliseconds,
-                        begin: 0,
-                        end: 20,
-                        curve: Curves.ease,
-                      )
+                            duration: 300.milliseconds,
+                            begin: 0,
+                            end: 20,
+                            curve: Curves.ease,
+                          )
                           .then()
                           .moveY(
-                        begin: 0,
-                        end: -100,
-                        duration: 300.milliseconds,
-                        curve: Curves.ease,
-                      )
+                            begin: 0,
+                            end: -100,
+                            duration: 300.milliseconds,
+                            curve: Curves.ease,
+                          )
                           .fadeOut(
-                        duration: 300.milliseconds,
-                        curve: Curves.ease,
-                      ),
+                            duration: 300.milliseconds,
+                            curve: Curves.ease,
+                          ),
 
                       AvatarGlow(
                         glowColor: Colors.white,
+                        startDelay: 1500.milliseconds,
                         child: addMaterialContainerMotion(
                           context,
                           closedBuilder: (context, openWidget) =>
@@ -203,7 +262,7 @@ class _OnboardingState extends State<Onboarding> with TickerProviderStateMixin {
 
                                   Future.delayed(
                                     300.milliseconds,
-                                        () => context.goNamed('tickets')
+                                    () => context.goNamed('tickets'),
                                   );
                                 },
                                 child:
@@ -235,6 +294,24 @@ class _OnboardingState extends State<Onboarding> with TickerProviderStateMixin {
                                             ),
                                           ),
                                         )
+                                        .animate(autoPlay: true, delay: 1000.milliseconds)
+                                        .moveX(
+                                      begin: 100,
+                                      end: -20,
+                                      duration: 500.milliseconds,
+                                      curve: Curves.ease,
+                                    )
+                                        .fadeIn(
+                                      duration: 500.milliseconds,
+                                      curve: Curves.ease,
+                                    )
+                                        .then()
+                                        .moveX(
+                                      duration: 500.milliseconds,
+                                      begin: 0,
+                                      end: 20,
+                                      curve: Curves.ease,
+                                    )
                                         .animate(
                                           autoPlay: false,
                                           controller: _loginBtnAnimation,
@@ -265,8 +342,25 @@ class _OnboardingState extends State<Onboarding> with TickerProviderStateMixin {
                             );
                           },
                           openBuilder: (context, closeWidget) => Login(),
+                        ).animate(autoPlay: true, delay: 1000.milliseconds)
+                            .moveX(
+                          begin: 100,
+                          end: -20,
+                          duration: 500.milliseconds,
+                          curve: Curves.ease,
+                        )
+                            .fadeIn(
+                          duration: 500.milliseconds,
+                          curve: Curves.ease,
+                        )
+                            .then()
+                            .moveX(
+                          duration: 500.milliseconds,
+                          begin: 0,
+                          end: 20,
+                          curve: Curves.ease,
                         ),
-                      ),
+                      )
                     ],
                   ),
                   // CustomFilledButton(text: "Login", onTap: () {})
