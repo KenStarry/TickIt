@@ -99,6 +99,9 @@ flutter:
   assets:
     - assets/images/
     - assets/svg/
+    - assets/3d/
+    - assets/3d/headers/
+    - assets/3d/settings/
 
   fonts:
     - family: Urbanist

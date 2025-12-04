@@ -34,7 +34,7 @@ class TickIt extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const Color kPrimaryBrandColor = Color(0xFF9237db);
+    const Color kPrimaryBrandColor = Color(0xFF00b4d8);
 
     final TickItThemeConfig lightConfig = resolveTheme(
       brightness: Brightness.light,
