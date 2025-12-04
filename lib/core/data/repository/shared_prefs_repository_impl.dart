@@ -10,7 +10,11 @@ class SharedPrefsRepositoryImpl extends SharedPrefsRepository {
   String get getLoginToken => sharedPrefs.getString("token") ?? '';
 
   @override
-  Future<void> setLoginToken(String token) async {
+  String get getEmail => sharedPrefs.getString("email") ?? '';
+
+  @override
+  Future<void> setLoginToken(String token, {required String email}) async {
     await sharedPrefs.setString("token", token);
+    await sharedPrefs.setString("email", email);
   }
 }

@@ -8,6 +8,7 @@ import 'package:tickit/core/utils/extensions/context_extensions.dart';
 import 'package:tickit/features/tickets/presentation/bloc/tickets_bloc.dart';
 import '../../../../core/presentation/components/avatar.dart';
 import '../../../dashboard/domain/enum/feedback_enum.dart';
+import '../../../dashboard/presentation/components/global_overlay.dart';
 import '../../../dashboard/presentation/cubit/feedback_cubit.dart';
 import '../../../dashboard/presentation/cubit/navigation_cubit.dart';
 import '../../domain/model/ticket_category_model.dart';
@@ -72,6 +73,10 @@ class _TicketCategoriesPageState extends State<TicketCategoriesPage> {
     super.initState();
 
     context.read<TicketsBloc>().add(FetchTicketsEvent());
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      showNavigation.value = true;
+    });
   }
 
   @override

@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tickit/core/di/locator.dart';
+import 'package:tickit/core/domain/repository/shared_prefs_repository.dart';
 
 import '../../../../core/presentation/components/custom_network_image.dart';
 import '../../../../core/utils/extensions/context_extensions.dart';
+import '../../../dashboard/presentation/components/global_overlay.dart';
 import '../components/user_profile_header.dart';
 import '../components/user_profile_settings_section.dart';
 
@@ -23,6 +26,10 @@ class _UserProfilePageState extends State<UserProfilePage> {
     super.initState();
 
     controller = TextEditingController();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      showNavigation.value = true;
+    });
   }
 
   @override
@@ -86,30 +93,36 @@ class _UserProfilePageState extends State<UserProfilePage> {
 
             /// Profile Details
             SliverToBoxAdapter(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        spacing: 8,
-                        children: [
-                          Text('Rebecca M.',
-                            style: Theme.of(context).textTheme.titleLarge,
-                          ),
-                          Text('@ rebeccamikaelson@gmail.com',
-                            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                color: context.colors.textBlack600
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                )
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      spacing: 8,
+                      children: [
+                        Text(
+                          'Rebecca M.',
+                          style: Theme.of(context).textTheme.titleLarge,
+                        ),
+                        Text(
+                          locator
+                                  .get<SharedPrefsRepository>()
+                                  .getEmail
+                                  .isNotEmpty
+                              ? locator.get<SharedPrefsRepository>().getEmail
+                              : "No Email",
+                          style: Theme.of(context).textTheme.bodyMedium
+                              ?.copyWith(color: context.colors.textBlack600),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
             ),
 
             SliverToBoxAdapter(child: SizedBox(height: 24)),

@@ -15,6 +15,7 @@ import 'package:uuid/uuid.dart';
 
 import '../../../../../core/presentation/components/blob_clipper.dart';
 import '../../../../dashboard/domain/enum/feedback_enum.dart';
+import '../bloc/login_bloc.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -26,8 +27,6 @@ class Login extends StatefulWidget {
 class _LoginState extends State<Login> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-
-  bool _ticketLoading = false;
 
   @override
   void initState() {
@@ -192,73 +191,94 @@ class _LoginState extends State<Login> {
                         mainAxisAlignment: .center,
                         crossAxisAlignment: .center,
                         children: [
-                          GestureDetector(
-                            onTap: () async {
-                              // _triggerAnimation();
+                          BlocConsumer<LoginBloc, LoginState>(
+                            listener: (BuildContext context, LoginState loginState) {
+                              if (loginState is LoginSuccess) {
+                                context.read<FeedbackCubit>().show(
+                                  "Logged In Successfully!",
+                                  type: FeedbackType.success,
+                                );
 
-                              setState(() {
-                                _ticketLoading = true;
-                              });
+                                context.goNamed('tickets');
+                              }
 
-                              // Simulate a network request (e.g., 2 seconds)
-                              await Future.delayed(const Duration(seconds: 2));
-
-                              context.read<FeedbackCubit>().show(
-                                "Logged In Successfully!",
-                                type: FeedbackType.success,
-                              );
-
-                              //  Save Token to SharedPrefs
-                              final repo = locator.get<SharedPrefsRepository>();
-
-                              await repo.setLoginToken(Uuid().v4());
-
-                              context.goNamed('tickets');
-
-                              // Reset back to button (optional)
-                              if (mounted) {
-                                setState(() {
-                                  _ticketLoading = false;
-                                });
+                              if (loginState is LoginFailure) {
+                                context.read<FeedbackCubit>().show(
+                                  "Incorrect email or password. Try Again",
+                                  type: FeedbackType.error,
+                                );
                               }
                             },
-                            child: AnimatedContainer(
-                              duration: 200.milliSeconds,
-                              curve: Curves.easeIn,
-                              width: _ticketLoading ? 60 : 150,
-                              height: _ticketLoading ? 60 : 55,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(100),
-                                color: context.colors.primaryColor,
-                              ),
-                              child: Center(
-                                child: AnimatedSwitcher(
-                                  duration: 300.milliSeconds,
-                                  switchInCurve: Curves.easeIn,
-                                  switchOutCurve: Curves.easeOut,
-                                  child: _ticketLoading
-                                      ? UnconstrainedBox(
-                                          child: SpinKitSpinningLines(
-                                            color:
-                                                context.colors.onPrimaryColor,
-                                            size: 45,
-                                          ),
-                                        )
-                                      : Text(
-                                          "Login",
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .bodyLarge!
-                                              .copyWith(
+                            builder: (context, loginState) {
+                              final isLoading = loginState is LoginLoading;
+                              return GestureDetector(
+                                onTap: () async {
+                                  // _triggerAnimation();
+                                  
+                                  context.read<LoginBloc>().add(LoginUserEvent(userEmail: emailController.text));
+                                  //
+                                  // // setState(() {
+                                  // //   _ticketLoading = true;
+                                  // // });
+                                  //
+                                  // // Simulate a network request (e.g., 2 seconds)
+                                  //
+                                  // //  Save Token to SharedPrefs
+                                  // final repo = locator
+                                  //     .get<SharedPrefsRepository>();
+                                  //
+                                  // await repo.setLoginToken(
+                                  //   Uuid().v4(),
+                                  //   email: emailController.text,
+                                  // );
+
+                                  // Reset back to button (optional)
+                                  // if (mounted) {
+                                  //   setState(() {
+                                  //     _ticketLoading = false;
+                                  //   });
+                                  // }
+                                },
+                                child: AnimatedContainer(
+                                  duration: 200.milliSeconds,
+                                  curve: Curves.easeIn,
+                                  width: isLoading ? 60 : 150,
+                                  height: isLoading ? 60 : 55,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(100),
+                                    color: context.colors.primaryColor,
+                                  ),
+                                  child: Center(
+                                    child: AnimatedSwitcher(
+                                      duration: 300.milliSeconds,
+                                      switchInCurve: Curves.easeIn,
+                                      switchOutCurve: Curves.easeOut,
+                                      child: isLoading
+                                          ? UnconstrainedBox(
+                                              child: SpinKitSpinningLines(
                                                 color: context
                                                     .colors
                                                     .onPrimaryColor,
-                                                fontWeight: FontWeight.w700,
+                                                size: 45,
                                               ),
-                                        ),
+                                            )
+                                          : Text(
+                                              "Login",
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .bodyLarge!
+                                                  .copyWith(
+                                                    color: context
+                                                        .colors
+                                                        .onPrimaryColor,
+                                                    fontWeight: FontWeight.w700,
+                                                  ),
+                                            ),
+                                    ),
+                                  ),
                                 ),
-                              ),
-                            ),
+                              );
+                            },
                           ),
                         ],
                       ),
