@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../../core/presentation/components/feedback_banner.dart';
-import 'navigation_basic.dart';
+import 'bottom_navigation.dart';
 
 ValueNotifier<bool> showNavigation = ValueNotifier(true);
 
