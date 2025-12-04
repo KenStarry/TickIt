@@ -7,6 +7,9 @@ import 'package:go_router/go_router.dart';
 import 'package:tickit/core/presentation/components/material_motion.dart';
 import 'package:tickit/core/utils/extensions/context_extensions.dart';
 
+import '../../auth/presentation/pages/login/login.dart';
+import '../../dashboard/presentation/components/global_overlay.dart';
+
 class Onboarding extends StatefulWidget {
   const Onboarding({super.key});
 
@@ -31,6 +34,10 @@ class _OnboardingState extends State<Onboarding> with TickerProviderStateMixin {
     _loginBtnAnimation = AnimationController(vsync: this);
 
     _carouselController = slider.CarouselSliderController();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      showNavigation.value = false;
+    });
   }
 
   @override
@@ -85,7 +92,7 @@ class _OnboardingState extends State<Onboarding> with TickerProviderStateMixin {
                       spacing: 24,
                       children: [
                         Text(
-                              "Hey\nready for Tonight?",
+                              "Ticket\nresolution made Easy!",
                               style: Theme.of(context).textTheme.titleLarge
                                   ?.copyWith(fontSize: 50, color: Colors.white),
                             )
@@ -113,7 +120,8 @@ class _OnboardingState extends State<Onboarding> with TickerProviderStateMixin {
                         Text(
                               "Resolve Tickets with ease",
                               style: Theme.of(context).textTheme.bodyMedium
-                                  ?.copyWith(fontWeight: FontWeight.w600),
+                                  ?.copyWith(fontWeight: FontWeight.w600,
+                              color: Colors.white),
                             )
                             .animate(
                               autoPlay: false,
@@ -143,9 +151,38 @@ class _OnboardingState extends State<Onboarding> with TickerProviderStateMixin {
                   Row(
                     mainAxisAlignment: .end,
                     crossAxisAlignment: .center,
+                    spacing: 24,
                     children: [
+                      Text(
+                        "Start Here",
+                        style: Theme.of(context).textTheme.bodyMedium
+                            ?.copyWith(fontWeight: FontWeight.w600,
+                            color: Colors.white),
+                      )
+                          .animate(
+                        autoPlay: false,
+                        controller: _subTitleAnimation,
+                      )
+                          .moveY(
+                        duration: 300.milliseconds,
+                        begin: 0,
+                        end: 20,
+                        curve: Curves.ease,
+                      )
+                          .then()
+                          .moveY(
+                        begin: 0,
+                        end: -100,
+                        duration: 300.milliseconds,
+                        curve: Curves.ease,
+                      )
+                          .fadeOut(
+                        duration: 300.milliseconds,
+                        curve: Curves.ease,
+                      ),
+
                       AvatarGlow(
-                        glowColor: context.colors.primaryColor,
+                        glowColor: Colors.white,
                         child: addMaterialContainerMotion(
                           context,
                           closedBuilder: (context, openWidget) =>
@@ -159,10 +196,10 @@ class _OnboardingState extends State<Onboarding> with TickerProviderStateMixin {
                                         _subTitleAnimation?.forward(from: 0.0),
                                   );
 
-                                  // Future.delayed(
-                                  //   300.milliseconds,
-                                  //   () => openWidget(),
-                                  // );
+                                  Future.delayed(
+                                    300.milliseconds,
+                                    () => openWidget(),
+                                  );
 
                                   Future.delayed(
                                     300.milliseconds,
@@ -227,13 +264,7 @@ class _OnboardingState extends State<Onboarding> with TickerProviderStateMixin {
                               () => _subTitleAnimation?.reverse(from: 1.0),
                             );
                           },
-                          openBuilder: (context, closeWidget) => Container(
-                            width: double.infinity,
-                            height: double.infinity,
-                            decoration: BoxDecoration(
-                              color: context.colors.backgroundColor,
-                            ),
-                          ),
+                          openBuilder: (context, closeWidget) => Login(),
                         ),
                       ),
                     ],

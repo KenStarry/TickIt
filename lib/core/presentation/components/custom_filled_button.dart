@@ -40,7 +40,6 @@ class CustomFilledButton extends StatelessWidget {
       },
       child: Container(
         width: width ?? double.infinity,
-        // height: 58,
         height: height ?? 55,
         decoration: BoxDecoration(
           borderRadius: borderRadius ?? BorderRadius.circular(100),

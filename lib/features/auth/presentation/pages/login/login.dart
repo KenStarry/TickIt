@@ -1,11 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_extend/flutter_extend.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:go_router/go_router.dart';
+import 'package:tickit/core/di/locator.dart';
+import 'package:tickit/core/domain/repository/shared_prefs_repository.dart';
+import 'package:tickit/core/presentation/components/custom_filled_button.dart';
 import 'package:tickit/core/presentation/components/custom_text_field.dart';
 import 'package:tickit/core/utils/extensions/context_extensions.dart';
 import 'package:tickit/features/dashboard/presentation/components/global_overlay.dart';
+import 'package:tickit/features/dashboard/presentation/cubit/feedback_cubit.dart';
+import 'package:uuid/uuid.dart';
 
 import '../../../../../core/presentation/components/blob_clipper.dart';
+import '../../../../dashboard/domain/enum/feedback_enum.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -17,6 +26,8 @@ class Login extends StatefulWidget {
 class _LoginState extends State<Login> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+
+  bool _ticketLoading = false;
 
   @override
   void initState() {
@@ -35,34 +46,53 @@ class _LoginState extends State<Login> {
       body: SizedBox(
         width: double.infinity,
         height: double.infinity,
-        child: Column(
-          children: [
-            /// Carousel Slider for Onboarding Screens
-            ClipPath(
-              clipper: BottomBlobClipper(),
-              child: Container(
-                height: context.screenHeight * 0.45,
-                child: Image.asset(
-                  "assets/images/bg3.png",
-                  width: double.infinity,
-                  height: double.infinity,
-                  fit: BoxFit.cover,
+        child: CustomScrollView(
+          physics: const BouncingScrollPhysics(),
+          slivers: [
+            SliverAppBar(
+              expandedHeight: context.screenHeight * 0.4,
+              backgroundColor: context.colors.backgroundColor,
+              surfaceTintColor: context.colors.backgroundColor,
+              pinned: true,
+              stretch: true,
+              flexibleSpace: FlexibleSpaceBar(
+                collapseMode: CollapseMode.pin,
+                background: ClipPath(
+                  clipper: BottomBlobClipper(),
+                  child: SizedBox(
+                    height: double.infinity,
+                    child: Image.asset(
+                      "assets/images/bg3.png",
+                      width: double.infinity,
+                      height: double.infinity,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
                 ),
               ),
             ),
-            Expanded(
-              child: Container(
-                width: double.infinity,
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                decoration: BoxDecoration(
-                  color: context.colors.backgroundColor,
-                ),
-                child: Column(
-                  // spacing: 16,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Column(
+
+            // Carousel Slider for Onboarding Screens
+            // SliverToBoxAdapter(
+            //   child: ClipPath(
+            //     clipper: BottomBlobClipper(),
+            //     child: Container(
+            //       height: context.screenHeight * 0.45,
+            //       child: Image.asset(
+            //         "assets/images/bg3.png",
+            //         width: double.infinity,
+            //         height: double.infinity,
+            //         fit: BoxFit.cover,
+            //       ),
+            //     ),
+            //   ),
+            // ),
+            SliverPadding(
+              padding: const .symmetric(horizontal: 16),
+              sliver: SliverMainAxisGroup(
+                slivers: [
+                  SliverToBoxAdapter(
+                    child: Column(
                       crossAxisAlignment: .start,
                       mainAxisAlignment: .center,
                       spacing: 8,
@@ -96,11 +126,15 @@ class _LoginState extends State<Login> {
                         ),
                       ],
                     ),
+                  ),
 
-                    Column(
+                  SliverToBoxAdapter(child: SizedBox(height: 32)),
+
+                  SliverToBoxAdapter(
+                    child: Column(
                       crossAxisAlignment: .center,
                       mainAxisAlignment: .center,
-                      spacing: 16,
+                      spacing: 24,
                       children: [
                         CustomTextField(
                           controller: emailController,
@@ -145,11 +179,96 @@ class _LoginState extends State<Login> {
                           ),
                           hintText: "Enter Password",
                         ),
-                        Row(children: []),
                       ],
                     ),
+                  ),
 
-                    Column(
+                  SliverToBoxAdapter(child: SizedBox(height: 32)),
+
+                  SliverToBoxAdapter(
+                    child: SizedBox(
+                      width: double.infinity,
+                      child: Row(
+                        mainAxisAlignment: .center,
+                        crossAxisAlignment: .center,
+                        children: [
+                          GestureDetector(
+                            onTap: () async {
+                              // _triggerAnimation();
+
+                              setState(() {
+                                _ticketLoading = true;
+                              });
+
+                              // Simulate a network request (e.g., 2 seconds)
+                              await Future.delayed(const Duration(seconds: 2));
+
+                              context.read<FeedbackCubit>().show(
+                                "Logged In Successfully!",
+                                type: FeedbackType.success,
+                              );
+
+                              //  Save Token to SharedPrefs
+                              final repo = locator.get<SharedPrefsRepository>();
+
+                              await repo.setLoginToken(Uuid().v4());
+
+                              context.goNamed('tickets');
+
+                              // Reset back to button (optional)
+                              if (mounted) {
+                                setState(() {
+                                  _ticketLoading = false;
+                                });
+                              }
+                            },
+                            child: AnimatedContainer(
+                              duration: 200.milliSeconds,
+                              curve: Curves.easeIn,
+                              width: _ticketLoading ? 60 : 150,
+                              height: _ticketLoading ? 60 : 55,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(100),
+                                color: context.colors.primaryColor,
+                              ),
+                              child: Center(
+                                child: AnimatedSwitcher(
+                                  duration: 300.milliSeconds,
+                                  switchInCurve: Curves.easeIn,
+                                  switchOutCurve: Curves.easeOut,
+                                  child: _ticketLoading
+                                      ? UnconstrainedBox(
+                                          child: SpinKitSpinningLines(
+                                            color:
+                                                context.colors.onPrimaryColor,
+                                            size: 45,
+                                          ),
+                                        )
+                                      : Text(
+                                          "Login",
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .bodyLarge!
+                                              .copyWith(
+                                                color: context
+                                                    .colors
+                                                    .onPrimaryColor,
+                                                fontWeight: FontWeight.w700,
+                                              ),
+                                        ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+
+                  SliverToBoxAdapter(child: SizedBox(height: 32)),
+
+                  SliverToBoxAdapter(
+                    child: Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       spacing: 16,
                       children: [
@@ -213,10 +332,30 @@ class _LoginState extends State<Login> {
                         ),
                       ],
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
+
+            SliverToBoxAdapter(child: SizedBox(height: 200)),
+
+            // Expanded(
+            //   child: Container(
+            //     width: double.infinity,
+            //     padding: const EdgeInsets.symmetric(horizontal: 16),
+            //     decoration: BoxDecoration(
+            //       color: context.colors.backgroundColor,
+            //     ),
+            //     child: Column(
+            //       // spacing: 16,
+            //       crossAxisAlignment: CrossAxisAlignment.start,
+            //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //       children: [
+            //
+            //       ],
+            //     ),
+            //   ),
+            // ),
           ],
         ),
       ),

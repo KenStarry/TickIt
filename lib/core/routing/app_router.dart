@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:tickit/core/di/locator.dart';
+import 'package:tickit/core/domain/repository/shared_prefs_repository.dart';
 import 'package:tickit/features/auth/presentation/pages/login/login.dart';
 import 'package:tickit/features/dashboard/presentation/pages/dashboard.dart';
 import 'package:tickit/features/onboarding/presentation/onboarding.dart';
@@ -51,10 +53,26 @@ final profileRoute = StatefulShellBranch(
 /// app route configuration
 final GoRouter appRouter = GoRouter(
   navigatorKey: rootNavKey,
-  initialLocation: "/login",
-  // redirect: (context, state) async {
-  //
-  //   return null;
-  // },
+  initialLocation: "/onboarding",
+  redirect: (context, state) async {
+    final repo = locator.get<SharedPrefsRepository>();
+
+    final isLoggedIn = repo.getLoginToken.isNotEmpty;
+    final isUserLoggingIn =
+        state.matchedLocation == '/onboarding' ||
+        state.matchedLocation == '/login';
+
+    print("-------------LOGIN TOKEN!!! ${repo.getLoginToken}");
+
+    if (!isLoggedIn && !isUserLoggingIn) {
+      return '/onboarding';
+    }
+
+    if (isLoggedIn && isUserLoggingIn) {
+      return '/tickets';
+    }
+
+    return null;
+  },
   routes: <RouteBase>[onboardingRoute, loginRoute, dashboardRoute],
 );
