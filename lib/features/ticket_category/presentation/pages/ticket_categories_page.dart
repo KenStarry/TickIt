@@ -2,9 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_extend/flutter_extend.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:go_router/go_router.dart';
 import 'package:tickit/core/presentation/components/custom_network_image.dart';
 import 'package:tickit/core/utils/extensions/context_extensions.dart';
 import 'package:tickit/features/tickets/presentation/bloc/tickets_bloc.dart';
+import '../../../../core/presentation/components/avatar.dart';
+import '../../../dashboard/domain/enum/feedback_enum.dart';
+import '../../../dashboard/presentation/cubit/feedback_cubit.dart';
 import '../../domain/model/ticket_category_model.dart';
 import '../components/ticket_category_card.dart';
 
@@ -111,17 +115,16 @@ class _TicketCategoriesPageState extends State<TicketCategoriesPage> {
                           ),
                         ),
 
-                        Container(
-                          width: 45,
-                          height: 45,
-                          decoration: BoxDecoration(
-                            borderRadius: .circular(12),
-                          ),
-                          child: CustomNetworkImage(
-                            url:
-                                "https://images.unsplash.com/photo-1524502397800-2eeaad7c3fe5?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-                            borderRadius: .circular(12),
-                          ),
+                        UserAvatar(
+                          imageUrl: 'https://plus.unsplash.com/premium_photo-1688350808212-4e6908a03925?q=80&w=1469&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+                          size: Size(45, 45),
+                          onTap: () {
+                            // context.read<AuthBloc>().add(AuthSignOutEvent());
+                            context.read<FeedbackCubit>().show(
+                                'Oops, something went wrong.',
+                                type: FeedbackType.success);
+                            // context.goNamed("profile");
+                          },
                         ),
                       ],
                     ),
@@ -138,7 +141,7 @@ class _TicketCategoriesPageState extends State<TicketCategoriesPage> {
 
             SliverToBoxAdapter(
               child: Text(
-                "Tickets",
+                "Ticket Categories",
                 style: context.textTheme.titleLarge?.copyWith(
                   fontWeight: .w700,
                   color: context.colors.textBlack800,

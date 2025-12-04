@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:tickit/features/dashboard/presentation/pages/dashboard.dart';
 import 'package:tickit/features/onboarding/presentation/onboarding.dart';
 import 'package:tickit/features/profile/presentation/pages/user_profile_page.dart';
 import 'package:tickit/features/ticket_category/presentation/pages/ticket_categories_page.dart';
@@ -8,31 +9,45 @@ import 'package:tickit/features/ticket_category/presentation/pages/ticket_catego
 final GlobalKey<NavigatorState> rootNavKey = GlobalKey<NavigatorState>();
 
 final onboardingRoute = GoRoute(
-    path: '/onboarding',
-    name: 'onboarding',
-    builder: (context, state) => Onboarding());
+  path: '/onboarding',
+  name: 'onboarding',
+  builder: (context, state) => Onboarding(),
+);
 
-final ticketsRoute = GoRoute(
-    path: '/tickets',
-    name: 'tickets',
-    builder: (context, state) => TicketCategoriesPage());
+final dashboardRoute = StatefulShellRoute.indexedStack(
+  builder: (context, state, navigationShell) {
+    return Dashboard(child: navigationShell);
+  },
+  branches: [ticketsRoute, profileRoute],
+);
 
-final profileRoute = GoRoute(
-    path: '/profile',
-    name: 'profile',
-    builder: (context, state) => UserProfilePage());
+final ticketsRoute = StatefulShellBranch(
+  routes: [
+    GoRoute(
+      path: '/tickets',
+      name: 'tickets',
+      builder: (context, state) => TicketCategoriesPage(),
+    ),
+  ],
+);
+
+final profileRoute = StatefulShellBranch(
+  routes: [
+    GoRoute(
+      path: '/profile',
+      name: 'profile',
+      builder: (context, state) => UserProfilePage(),
+    ),
+  ],
+);
 
 /// app route configuration
 final GoRouter appRouter = GoRouter(
   navigatorKey: rootNavKey,
-  initialLocation: "/profile",
+  initialLocation: "/tickets",
   // redirect: (context, state) async {
   //
   //   return null;
   // },
-  routes: <RouteBase>[
-    onboardingRoute,
-    ticketsRoute,
-    profileRoute
-  ],
+  routes: <RouteBase>[onboardingRoute, dashboardRoute],
 );

@@ -7,21 +7,15 @@ import '../../utils/extensions/context_extensions.dart';
 
 class UserAvatar extends StatelessWidget {
   final String imageUrl;
-  final bool isAgentVerified;
-  final bool showCrown;
   final BorderRadius? borderRadius;
   final Size? size;
-  final Size? crownSize;
   final VoidCallback? onTap;
 
   const UserAvatar({
     super.key,
     required this.imageUrl,
     this.borderRadius,
-    this.isAgentVerified = false,
     this.size,
-    this.showCrown = false,
-    this.crownSize,
     this.onTap,
   });
 
@@ -55,50 +49,6 @@ class UserAvatar extends StatelessWidget {
                           Icon(Icons.person_rounded),
                     ),
                   ),
-
-            Visibility(
-              visible: showCrown,
-              child: Align(
-                alignment: Alignment.bottomRight,
-                child: Container(
-                  width: crownSize?.width ?? 30,
-                  height: crownSize?.height ?? 30,
-                  padding: const EdgeInsets.all(4),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(100),
-                    color: context.colors.backgroundColor,
-                  ),
-                  child:
-                      SvgPicture.asset(
-                            "assets/images/icons/crown_outlined.svg",
-                            width: double.infinity,
-                            height: double.infinity,
-                            colorFilter: ColorFilter.mode(
-                              Color(0xFFFFC107),
-                              BlendMode.srcIn,
-                            ),
-                          )
-                          .animate(
-                            autoPlay: true,
-                            onComplete: (controller) =>
-                                controller.repeat(reverse: true),
-                          )
-                          .shimmer(
-                            duration: Duration(milliseconds: 2000),
-                            colors: [
-                              Color(0xFFF7C873),
-                              // Golden Glow
-                              Color(0xFFFFE9A7),
-                              // Soft Champagne
-                              Color(0xFFFFC107),
-                              // Amber Pop
-                              Color(0xFFFF9800),
-                              // Deep Orange// CribLynk Accent (Orange Touch)
-                            ],
-                          ),
-                ),
-              ),
-            ),
           ],
         ),
       ),

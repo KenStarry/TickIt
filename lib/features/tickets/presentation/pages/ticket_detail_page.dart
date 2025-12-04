@@ -5,12 +5,9 @@ import 'package:flutter_extend/flutter_extend.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
-import 'package:tickit/core/presentation/components/custom_filled_button.dart';
 import 'package:tickit/core/utils/extensions/context_extensions.dart';
 import 'package:tickit/features/tickets/domain/model/ticket_model.dart';
 
-import '../../../../core/presentation/components/custom_network_image.dart';
-import '../../../../core/presentation/components/material_motion.dart';
 import '../bloc/ticket_resolver_cubit.dart';
 
 class TicketDetailPage extends StatefulWidget {
