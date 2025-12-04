@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_extend/flutter_extend.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -20,10 +21,20 @@ class Login extends StatefulWidget {
   State<Login> createState() => _LoginState();
 }
 
-class _LoginState extends State<Login> {
+class _LoginState extends State<Login> with TickerProviderStateMixin {
+  bool passVisible = false;
+
   final GlobalKey<FormState> loginFormKey = GlobalKey<FormState>();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+
+  late final AnimationController? _titleAnimation;
+  late final AnimationController? _descriptionAnimation;
+  late final AnimationController? _emailAnimation;
+  late final AnimationController? _passwordAnimation;
+  late final AnimationController? _loginBtnAnimation;
+  late final AnimationController? _continueAnimation;
+  late final AnimationController? _googleAnimation;
 
   @override
   void initState() {
@@ -32,6 +43,42 @@ class _LoginState extends State<Login> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       showNavigation.value = false;
     });
+
+    _titleAnimation = AnimationController(vsync: this);
+    _descriptionAnimation = AnimationController(vsync: this);
+    _emailAnimation = AnimationController(vsync: this);
+    _passwordAnimation = AnimationController(vsync: this);
+    _loginBtnAnimation = AnimationController(vsync: this);
+    _continueAnimation = AnimationController(vsync: this);
+    _googleAnimation = AnimationController(vsync: this);
+
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await _forwardAnimation();
+    });
+  }
+
+  Future<void> _forwardAnimation() async {
+    await Future.wait([
+      Future.delayed(200.milliseconds, () => _titleAnimation!.forward()),
+      Future.delayed(400.milliseconds, () => _descriptionAnimation!.forward()),
+      Future.delayed(600.milliseconds, () => _emailAnimation!.forward()),
+      Future.delayed(800.milliseconds, () => _passwordAnimation!.forward()),
+      Future.delayed(1000.milliseconds, () => _loginBtnAnimation!.forward()),
+      Future.delayed(1200.milliseconds, () => _continueAnimation!.forward()),
+      Future.delayed(1400.milliseconds, () => _googleAnimation!.forward()),
+    ]);
+  }
+
+  Future<void> _reverseAnimation() async {
+    await Future.wait([
+      Future.delayed(200.milliseconds, () => _googleAnimation!.reverse()),
+      Future.delayed(400.milliseconds, () => _continueAnimation!.reverse()),
+      Future.delayed(600.milliseconds, () => _loginBtnAnimation!.reverse()),
+      Future.delayed(800.milliseconds, () => _passwordAnimation!.reverse()),
+      Future.delayed(1000.milliseconds, () => _emailAnimation!.reverse()),
+      Future.delayed(1200.milliseconds, () => _descriptionAnimation!.reverse()),
+      Future.delayed(1400.milliseconds, () => _titleAnimation!.reverse()),
+    ]);
   }
 
   @override
@@ -107,32 +154,78 @@ class _LoginState extends State<Login> {
                         spacing: 8,
                         children: [
                           Text(
-                            "Login",
-                            style: Theme.of(
-                              context,
-                            ).textTheme.titleLarge?.copyWith(fontSize: 32),
-                          ),
+                                "Login",
+                                style: Theme.of(
+                                  context,
+                                ).textTheme.titleLarge?.copyWith(fontSize: 32),
+                              )
+                              .animate(
+                                autoPlay: false,
+                                controller: _titleAnimation,
+                              )
+                              .moveY(
+                                begin: 100,
+                                end: -10,
+                                duration: 300.milliseconds,
+                                curve: Curves.ease,
+                              )
+                              .fadeIn(
+                                duration: 300.milliseconds,
+                                curve: Curves.ease,
+                              )
+                              .then()
+                              .moveY(
+                                duration: 300.milliseconds,
+                                begin: 0,
+                                end: 10,
+                                curve: Curves.ease,
+                              ),
 
                           Text.rich(
-                            TextSpan(
-                              children: [
                                 TextSpan(
-                                  text: "Don't have an account? ",
-                                  style: Theme.of(context).textTheme.bodyMedium
-                                      ?.copyWith(fontWeight: .w700),
-                                ),
+                                  children: [
+                                    TextSpan(
+                                      text: "Don't have an account? ",
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyMedium
+                                          ?.copyWith(fontWeight: .w700),
+                                    ),
 
-                                TextSpan(
-                                  text: "Sign up",
-                                  style: Theme.of(context).textTheme.bodyMedium
-                                      ?.copyWith(
-                                        color: context.colors.primaryColor,
-                                        fontWeight: .w700,
-                                      ),
+                                    TextSpan(
+                                      text: "Sign up",
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyMedium
+                                          ?.copyWith(
+                                            color: context.colors.primaryColor,
+                                            fontWeight: .w700,
+                                          ),
+                                    ),
+                                  ],
                                 ),
-                              ],
-                            ),
-                          ),
+                              )
+                              .animate(
+                                autoPlay: false,
+                                controller: _descriptionAnimation,
+                              )
+                              .moveY(
+                                begin: 100,
+                                end: -20,
+                                duration: 300.milliseconds,
+                                curve: Curves.ease,
+                              )
+                              .fadeIn(
+                                duration: 300.milliseconds,
+                                curve: Curves.ease,
+                              )
+                              .then()
+                              .moveY(
+                                duration: 300.milliseconds,
+                                begin: 0,
+                                end: 20,
+                                curve: Curves.ease,
+                              ),
                         ],
                       ),
                     ),
@@ -146,48 +239,9 @@ class _LoginState extends State<Login> {
                         spacing: 24,
                         children: [
                           CustomTextField(
-                            controller: emailController,
-                            prefixIcon: SvgPicture.asset(
-                              "assets/svg/email.svg",
-                              width: 24,
-                              height: 24,
-                              colorFilter: ColorFilter.mode(
-                                context.colors.iconColor,
-                                BlendMode.srcIn,
-                              ),
-                            ),
-                            hintText: "Enter Email",
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return "Email is required";
-                              }
-
-                              if (!value.isEmailValid()) {
-                                return "Invalid Email Format";
-                              }
-
-                              return null;
-                            },
-                          ),
-                          CustomTextField(
-                            controller: passwordController,
-                            obscureText: true,
-                            prefixIcon: UnconstrainedBox(
-                              child: SvgPicture.asset(
-                                "assets/svg/lock.svg",
-                                width: 24,
-                                height: 24,
-                                colorFilter: ColorFilter.mode(
-                                  context.colors.iconColor,
-                                  BlendMode.srcIn,
-                                ),
-                              ),
-                            ),
-                            suffixIcon: IconButton(
-                              onPressed: () {},
-                              icon: UnconstrainedBox(
-                                child: SvgPicture.asset(
-                                  "assets/svg/eye.svg",
+                                controller: emailController,
+                                prefixIcon: SvgPicture.asset(
+                                  "assets/svg/email.svg",
                                   width: 24,
                                   height: 24,
                                   colorFilter: ColorFilter.mode(
@@ -195,16 +249,102 @@ class _LoginState extends State<Login> {
                                     BlendMode.srcIn,
                                   ),
                                 ),
+                                hintText: "Enter Email",
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return "Email is required";
+                                  }
+
+                                  if (!value.isEmailValid()) {
+                                    return "Invalid Email Format";
+                                  }
+
+                                  return null;
+                                },
+                              )
+                              .animate(
+                                autoPlay: false,
+                                controller: _emailAnimation,
+                              )
+                              .moveY(
+                                begin: 100,
+                                end: -20,
+                                duration: 300.milliseconds,
+                                curve: Curves.ease,
+                              )
+                              .fadeIn(
+                                duration: 300.milliseconds,
+                                curve: Curves.ease,
+                              )
+                              .then()
+                              .moveY(
+                                duration: 300.milliseconds,
+                                begin: 0,
+                                end: 20,
+                                curve: Curves.ease,
                               ),
-                            ),
-                            hintText: "Enter Password",
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return "Password is required";
-                              }
-                              return null;
-                            },
-                          ),
+
+                          CustomTextField(
+                                controller: passwordController,
+                                obscureText: !passVisible,
+                                prefixIcon: UnconstrainedBox(
+                                  child: SvgPicture.asset(
+                                    "assets/svg/lock.svg",
+                                    width: 24,
+                                    height: 24,
+                                    colorFilter: ColorFilter.mode(
+                                      context.colors.iconColor,
+                                      BlendMode.srcIn,
+                                    ),
+                                  ),
+                                ),
+                                suffixIcon: IconButton(
+                                  onPressed: () {
+                                    setState(() {
+                                      passVisible = !passVisible;
+                                    });
+                                  },
+                                  icon: UnconstrainedBox(
+                                    child: SvgPicture.asset(
+                                      "assets/svg/${passVisible ? "eye_closed" : "eye"}.svg",
+                                      width: 24,
+                                      height: 24,
+                                      colorFilter: ColorFilter.mode(
+                                        context.colors.iconColor,
+                                        BlendMode.srcIn,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                hintText: "Enter Password",
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return "Password is required";
+                                  }
+                                  return null;
+                                },
+                              )
+                              .animate(
+                                autoPlay: false,
+                                controller: _passwordAnimation,
+                              )
+                              .moveY(
+                                begin: 100,
+                                end: -20,
+                                duration: 300.milliseconds,
+                                curve: Curves.ease,
+                              )
+                              .fadeIn(
+                                duration: 300.milliseconds,
+                                curve: Curves.ease,
+                              )
+                              .then()
+                              .moveY(
+                                duration: 300.milliseconds,
+                                begin: 0,
+                                end: 20,
+                                curve: Curves.ease,
+                              ),
                         ],
                       ),
                     ),
@@ -223,12 +363,15 @@ class _LoginState extends State<Login> {
                                   (
                                     BuildContext context,
                                     LoginState loginState,
-                                  ) {
+                                  ) async {
                                     if (loginState is LoginSuccess) {
                                       context.read<FeedbackCubit>().show(
                                         "Logged In Successfully!",
                                         type: FeedbackType.success,
                                       );
+
+                                      //  Reverse the animations first
+                                      await _reverseAnimation();
 
                                       context.goNamed('tickets');
                                     }
@@ -243,80 +386,84 @@ class _LoginState extends State<Login> {
                               builder: (context, loginState) {
                                 final isLoading = loginState is LoginLoading;
                                 return GestureDetector(
-                                  onTap: () async {
-                                    // _triggerAnimation();
+                                      onTap: () async {
+                                        // _triggerAnimation();
 
-                                    if (loginFormKey.currentState!.validate()) {
-                                      context.read<LoginBloc>().add(
-                                        LoginUserEvent(
-                                            userEmail: emailController.text,
-                                            password: passwordController.text
+                                        if (loginFormKey.currentState!
+                                            .validate()) {
+                                          context.read<LoginBloc>().add(
+                                            LoginUserEvent(
+                                              userEmail: emailController.text,
+                                              password: passwordController.text,
+                                            ),
+                                          );
+
+                                          context.unFocus();
+                                        }
+                                      },
+                                      child: AnimatedContainer(
+                                        duration: 200.milliSeconds,
+                                        curve: Curves.easeIn,
+                                        width: isLoading ? 60 : 150,
+                                        height: isLoading ? 60 : 55,
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(
+                                            100,
+                                          ),
+                                          color: context.colors.primaryColor,
                                         ),
-                                      );
-                                    }
-                                    //
-                                    // // setState(() {
-                                    // //   _ticketLoading = true;
-                                    // // });
-                                    //
-                                    // // Simulate a network request (e.g., 2 seconds)
-                                    //
-                                    // //  Save Token to SharedPrefs
-                                    // final repo = locator
-                                    //     .get<SharedPrefsRepository>();
-                                    //
-                                    // await repo.setLoginToken(
-                                    //   Uuid().v4(),
-                                    //   email: emailController.text,
-                                    // );
-
-                                    // Reset back to button (optional)
-                                    // if (mounted) {
-                                    //   setState(() {
-                                    //     _ticketLoading = false;
-                                    //   });
-                                    // }
-                                  },
-                                  child: AnimatedContainer(
-                                    duration: 200.milliSeconds,
-                                    curve: Curves.easeIn,
-                                    width: isLoading ? 60 : 150,
-                                    height: isLoading ? 60 : 55,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(100),
-                                      color: context.colors.primaryColor,
-                                    ),
-                                    child: Center(
-                                      child: AnimatedSwitcher(
-                                        duration: 300.milliSeconds,
-                                        switchInCurve: Curves.easeIn,
-                                        switchOutCurve: Curves.easeOut,
-                                        child: isLoading
-                                            ? UnconstrainedBox(
-                                                child: SpinKitSpinningLines(
-                                                  color: context
-                                                      .colors
-                                                      .onPrimaryColor,
-                                                  size: 45,
-                                                ),
-                                              )
-                                            : Text(
-                                                "Login",
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .bodyLarge!
-                                                    .copyWith(
+                                        child: Center(
+                                          child: AnimatedSwitcher(
+                                            duration: 300.milliSeconds,
+                                            switchInCurve: Curves.easeIn,
+                                            switchOutCurve: Curves.easeOut,
+                                            child: isLoading
+                                                ? UnconstrainedBox(
+                                                    child: SpinKitSpinningLines(
                                                       color: context
                                                           .colors
                                                           .onPrimaryColor,
-                                                      fontWeight:
-                                                          FontWeight.w700,
+                                                      size: 45,
                                                     ),
-                                              ),
+                                                  )
+                                                : Text(
+                                                    "Login",
+                                                    style: Theme.of(context)
+                                                        .textTheme
+                                                        .bodyLarge!
+                                                        .copyWith(
+                                                          color: context
+                                                              .colors
+                                                              .onPrimaryColor,
+                                                          fontWeight:
+                                                              FontWeight.w700,
+                                                        ),
+                                                  ),
+                                          ),
+                                        ),
                                       ),
-                                    ),
-                                  ),
-                                );
+                                    )
+                                    .animate(
+                                      autoPlay: false,
+                                      controller: _loginBtnAnimation,
+                                    )
+                                    .moveY(
+                                      begin: 100,
+                                      end: -20,
+                                      duration: 300.milliseconds,
+                                      curve: Curves.ease,
+                                    )
+                                    .fadeIn(
+                                      duration: 300.milliseconds,
+                                      curve: Curves.ease,
+                                    )
+                                    .then()
+                                    .moveY(
+                                      duration: 300.milliseconds,
+                                      begin: 0,
+                                      end: 20,
+                                      curve: Curves.ease,
+                                    );
                               },
                             ),
                           ],
@@ -332,63 +479,114 @@ class _LoginState extends State<Login> {
                         spacing: 16,
                         children: [
                           Row(
-                            spacing: 24,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Expanded(
-                                child: Divider(
-                                  thickness: 2,
-                                  color: context.colors.grey200,
-                                ),
-                              ),
-                              Text(
-                                "Or Continue with",
-                                style: Theme.of(context).textTheme.bodyMedium
-                                    ?.copyWith(fontWeight: .w700),
-                              ),
-                              Expanded(
-                                child: Divider(
-                                  thickness: 2,
-                                  color: context.colors.grey200,
-                                ),
-                              ),
-                            ],
-                          ),
-                          GestureDetector(
-                            onTap: () {},
-                            child: UnconstrainedBox(
-                              child: Container(
-                                padding: const EdgeInsets.symmetric(
-                                  vertical: 18,
-                                  horizontal: 24,
-                                ),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  spacing: 16,
-                                  children: [
-                                    Container(
-                                      width: 50,
-                                      height: 50,
-                                      decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        color: context.colors.grey100,
-                                        boxShadow: [],
-                                      ),
-                                      child: UnconstrainedBox(
-                                        child: SvgPicture.asset(
-                                          "assets/svg/google.svg",
-                                          width: 30,
-                                          height: 30,
-                                        ),
-                                      ),
+                                spacing: 24,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Expanded(
+                                    child: Divider(
+                                      thickness: 2,
+                                      color: context.colors.grey200,
                                     ),
-                                  ],
-                                ),
+                                  ),
+                                  Text(
+                                    "Or Continue with",
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodyMedium
+                                        ?.copyWith(fontWeight: .w700),
+                                  ),
+                                  Expanded(
+                                    child: Divider(
+                                      thickness: 2,
+                                      color: context.colors.grey200,
+                                    ),
+                                  ),
+                                ],
+                              )
+                              .animate(
+                                autoPlay: false,
+                                controller: _continueAnimation,
+                              )
+                              .moveY(
+                                begin: 100,
+                                end: -20,
+                                duration: 300.milliseconds,
+                                curve: Curves.ease,
+                              )
+                              .fadeIn(
+                                duration: 300.milliseconds,
+                                curve: Curves.ease,
+                              )
+                              .then()
+                              .moveY(
+                                duration: 300.milliseconds,
+                                begin: 0,
+                                end: 20,
+                                curve: Curves.ease,
                               ),
-                            ),
-                          ),
+                          GestureDetector(
+                                onTap: () {
+                                  context.read<FeedbackCubit>().show(
+                                    "Coming Soon",
+                                    type: FeedbackType.success,
+                                  );
+                                },
+                                child: UnconstrainedBox(
+                                  child: Container(
+                                    padding: const EdgeInsets.symmetric(
+                                      vertical: 18,
+                                      horizontal: 24,
+                                    ),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      spacing: 16,
+                                      children: [
+                                        Container(
+                                          width: 50,
+                                          height: 50,
+                                          decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            color: context.colors.grey100,
+                                            boxShadow: [],
+                                          ),
+                                          child: UnconstrainedBox(
+                                            child: SvgPicture.asset(
+                                              "assets/svg/google.svg",
+                                              width: 30,
+                                              height: 30,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              )
+                              .animate(
+                                autoPlay: false,
+                                controller: _googleAnimation,
+                              )
+                              .moveY(
+                                begin: 100,
+                                end: -20,
+                                duration: 300.milliseconds,
+                                curve: Curves.ease,
+                              )
+                              .fadeIn(
+                                duration: 300.milliseconds,
+                                curve: Curves.ease,
+                              )
+                              .then()
+                              .moveY(
+                                duration: 300.milliseconds,
+                                begin: 0,
+                                end: 20,
+                                curve: Curves.ease,
+                              ),
                         ],
                       ),
                     ),
@@ -397,24 +595,6 @@ class _LoginState extends State<Login> {
               ),
 
               SliverToBoxAdapter(child: SizedBox(height: 200)),
-
-              // Expanded(
-              //   child: Container(
-              //     width: double.infinity,
-              //     padding: const EdgeInsets.symmetric(horizontal: 16),
-              //     decoration: BoxDecoration(
-              //       color: context.colors.backgroundColor,
-              //     ),
-              //     child: Column(
-              //       // spacing: 16,
-              //       crossAxisAlignment: CrossAxisAlignment.start,
-              //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              //       children: [
-              //
-              //       ],
-              //     ),
-              //   ),
-              // ),
             ],
           ),
         ),
