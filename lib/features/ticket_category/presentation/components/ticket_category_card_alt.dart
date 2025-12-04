@@ -1,5 +1,6 @@
 import 'package:avatar_glow/avatar_glow.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_extend/flutter_extend.dart';
 import 'package:flutter_svg/svg.dart';
@@ -17,8 +18,13 @@ import '../../../tickets/presentation/bloc/ticket_resolver_cubit.dart';
 
 class TicketCategoryCardAlt extends StatefulWidget {
   final TicketCategoryModel ticketModel;
+  final bool isLoading;
 
-  const TicketCategoryCardAlt({super.key, required this.ticketModel});
+  const TicketCategoryCardAlt({
+    super.key,
+    required this.ticketModel,
+    required this.isLoading,
+  });
 
   @override
   State<TicketCategoryCardAlt> createState() => _TicketCategoryCardAltState();
@@ -64,26 +70,47 @@ class _TicketCategoryCardAltState extends State<TicketCategoryCardAlt> {
         },
         child: Container(
           width: double.infinity,
+          margin: widget.isLoading ? const EdgeInsets.only(bottom: 24) : null,
           decoration: BoxDecoration(borderRadius: BorderRadius.circular(24)),
           child: Row(
             mainAxisAlignment: .center,
             crossAxisAlignment: .center,
             spacing: 8,
             children: [
-              Container(
-                width: 100,
-                height: 100,
-                margin: const .only(bottom: 16, top: 16),
-                child: ClipRRect(
-                  borderRadius: .circular(24),
-                  child: Image.asset(
-                    widget.ticketModel.categoryAsset,
-                    width: double.infinity,
-                    height: double.infinity,
-                    fit: .cover,
-                  ),
-                ),
-              ),
+              widget.isLoading
+                  ? Container(
+                          width: 100,
+                          height: 100,
+                          decoration: BoxDecoration(
+                            color: context.colors.surfaceColor,
+                            borderRadius: .circular(24),
+                          ),
+                        )
+                        .animate(
+                          autoPlay: true,
+                          onComplete: (controller) =>
+                              controller.repeat(reverse: true),
+                        )
+                        .shimmer(
+                          duration: 2.seconds,
+                          color: context.colors.iconColor.withValues(
+                            alpha: 0.3,
+                          ),
+                        )
+                  : Container(
+                      width: 100,
+                      height: 100,
+                      margin: const .only(bottom: 16, top: 16),
+                      child: ClipRRect(
+                        borderRadius: .circular(24),
+                        child: Image.asset(
+                          widget.ticketModel.categoryAsset,
+                          width: double.infinity,
+                          height: double.infinity,
+                          fit: .cover,
+                        ),
+                      ),
+                    ),
 
               /// Content
               Expanded(
@@ -96,37 +123,58 @@ class _TicketCategoryCardAltState extends State<TicketCategoryCardAlt> {
                     spacing: 16,
                     children: [
                       //  Title
-                      Text(
-                        widget.ticketModel.categoryTitle,
-                        style: context.textTheme.titleLarge?.copyWith(
-                            fontWeight: .bold,
-                            fontSize: 20,
-                            color: context.colors.textBlack800
-                        ),
-                      ),
+                      widget.isLoading
+                          ? Container(
+                                  width: 200,
+                                  height: 20,
+                                  decoration: BoxDecoration(
+                                    color: context.colors.surfaceColor,
+                                    borderRadius: .circular(100),
+                                  ),
+                                )
+                                .animate(
+                                  autoPlay: true,
+                                  onComplete: (controller) =>
+                                      controller.repeat(reverse: true),
+                                )
+                                .shimmer(
+                                  duration: 2.seconds,
+                                  color: context.colors.iconColor.withValues(
+                                    alpha: 0.3,
+                                  ),
+                                )
+                          : Text(
+                              widget.ticketModel.categoryTitle,
+                              style: context.textTheme.titleLarge?.copyWith(
+                                fontWeight: .bold,
+                                fontSize: 20,
+                                color: context.colors.textBlack800,
+                              ),
+                            ),
 
                       BlocBuilder<TicketResolverCubit, Set<String>>(
                         builder: (context, resolvedTicketsState) {
                           return BlocBuilder<TicketsBloc, TicketsState>(
                             builder: (context, ticketsState) {
-                              final totalTickets = ticketsState is TicketsSuccess
+                              final totalTickets =
+                                  ticketsState is TicketsSuccess
                                   ? ticketsState.tickets
-                                  .where(
-                                    (ticket) =>
-                                ticket.ticketCategoryId ==
-                                    widget.ticketModel.categoryId,
-                              )
-                                  .toList()
+                                        .where(
+                                          (ticket) =>
+                                              ticket.ticketCategoryId ==
+                                              widget.ticketModel.categoryId,
+                                        )
+                                        .toList()
                                   : <TicketModel>[];
 
                               final unresolvedTicketsCount =
-                              ticketsState is TicketsSuccess
+                                  ticketsState is TicketsSuccess
                                   ? totalTickets.length -
-                                  (resolvedTicketsState.where(
-                                        (id) => totalTickets
-                                        .map((t) => t.ticketId)
-                                        .contains(id),
-                                  )).length
+                                        (resolvedTicketsState.where(
+                                          (id) => totalTickets
+                                              .map((t) => t.ticketId)
+                                              .contains(id),
+                                        )).length
                                   : 0;
 
                               return Row(
@@ -134,27 +182,76 @@ class _TicketCategoryCardAltState extends State<TicketCategoryCardAlt> {
                                 mainAxisAlignment: .start,
                                 spacing: 16,
                                 children: [
-                                  Expanded(child: tickets is TicketsSuccess
-                                      ? AvatarOverlays(
-                                    isSvg: true,
-                                    label: "${totalTickets.length}+ Tickets",
-                                    labelTextStyling: context.textTheme.bodySmall?.copyWith(
-                                      fontWeight: .bold,
-                                      color: context.colors.iconColor.withValues(alpha: 0.9),
-                                    ),
-                                    avatarUrls: tickets.tickets
-                                        .where(
-                                          (ticket) =>
-                                      ticket.ticketCategoryId ==
-                                          widget.ticketModel.categoryId,
-                                    )
-                                        .toList()
-                                        .take(3)
-                                        .map((t) => t.ticketUserAvatarUrl)
-                                        .whereType<String>()
-                                        .toList(),
-                                  )
-                                      : SizedBox.shrink()),
+                                  Expanded(
+                                    child: widget.isLoading
+                                        ? Align(
+                                      alignment: Alignment.centerLeft,
+                                          child: UnconstrainedBox(
+                                              child:
+                                                  Container(
+                                                        width: 80,
+                                                        height: 15,
+                                                        decoration: BoxDecoration(
+                                                          color: context
+                                                              .colors
+                                                              .surfaceColor,
+                                                          borderRadius: .circular(
+                                                            100,
+                                                          ),
+                                                        ),
+                                                      )
+                                                      .animate(
+                                                        autoPlay: true,
+                                                        onComplete:
+                                                            (controller) =>
+                                                                controller.repeat(
+                                                                  reverse: true,
+                                                                ),
+                                                      )
+                                                      .shimmer(
+                                                        duration: 2.seconds,
+                                                        color: context
+                                                            .colors
+                                                            .iconColor
+                                                            .withValues(
+                                                              alpha: 0.3,
+                                                            ),
+                                                      ),
+                                            ),
+                                        )
+                                        : tickets is TicketsSuccess
+                                        ? AvatarOverlays(
+                                            isSvg: true,
+                                            label:
+                                                "${totalTickets.length}+ Tickets",
+                                            labelTextStyling: context
+                                                .textTheme
+                                                .bodySmall
+                                                ?.copyWith(
+                                                  fontWeight: .bold,
+                                                  color: context
+                                                      .colors
+                                                      .iconColor
+                                                      .withValues(alpha: 0.9),
+                                                ),
+                                            avatarUrls: tickets.tickets
+                                                .where(
+                                                  (ticket) =>
+                                                      ticket.ticketCategoryId ==
+                                                      widget
+                                                          .ticketModel
+                                                          .categoryId,
+                                                )
+                                                .toList()
+                                                .take(3)
+                                                .map(
+                                                  (t) => t.ticketUserAvatarUrl,
+                                                )
+                                                .whereType<String>()
+                                                .toList(),
+                                          )
+                                        : SizedBox.shrink(),
+                                  ),
 
                                   Row(
                                     crossAxisAlignment: .center,
@@ -164,12 +261,40 @@ class _TicketCategoryCardAltState extends State<TicketCategoryCardAlt> {
                                       //   asset: "assets/svg/ticket.svg",
                                       //   title: "${totalTickets.length}",
                                       // ),
-                                      detailRow(
-                                        asset: "assets/svg/clock.svg",
-                                        title: "$unresolvedTicketsCount Pending",
-                                      ),
+                                      widget.isLoading
+                                          ? Container(
+                                                  width: 50,
+                                                  height: 15,
+                                                  decoration: BoxDecoration(
+                                                    color: context
+                                                        .colors
+                                                        .surfaceColor,
+                                                    borderRadius: .circular(
+                                                      100,
+                                                    ),
+                                                  ),
+                                                )
+                                                .animate(
+                                                  autoPlay: true,
+                                                  onComplete: (controller) =>
+                                                      controller.repeat(
+                                                        reverse: true,
+                                                      ),
+                                                )
+                                                .shimmer(
+                                                  duration: 2.seconds,
+                                                  color: context
+                                                      .colors
+                                                      .iconColor
+                                                      .withValues(alpha: 0.3),
+                                                )
+                                          : detailRow(
+                                              asset: "assets/svg/clock.svg",
+                                              title:
+                                                  "$unresolvedTicketsCount Pending",
+                                            ),
                                     ],
-                                  )
+                                  ),
                                 ],
                               );
                             },
