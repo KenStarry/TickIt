@@ -256,6 +256,7 @@ class _TicketCategoriesPageState extends State<TicketCategoriesPage> {
                                   )
                                 : TicketCategoryCard(
                                     ticketModel: dummyCategorys[index],
+                                    isLoading: isLoading,
                                   ),
                           ),
                           childCount: dummyCategorys.length,
