@@ -11,6 +11,15 @@ If you’re ready, scroll on.
 
 ---
 
+## 🔑 Access Credentials
+
+To explore the app:
+
+- **Email:** any valid email format
+- **Password:** `Pass123`
+
+---
+
 
 ## 🌑 Prelude
 You asked for a simple ticket app.
